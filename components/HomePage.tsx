@@ -83,6 +83,79 @@ const HomePage = () => {
   return (
     <div className="min-h-screen w-full bg-white font-sans">
       {/* ====================== HERO ====================== */}
+      {/* NAVBAR */}
+<header className="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-100">
+  <div className="max-w-7xl mx-auto px-4 md:px-8 py-4">
+    <div className="flex items-center justify-between">
+
+      {/* Logo */}
+      <div className="flex items-center space-x-3">
+        <div className="w-10 h-10 bg-green-800 rounded-lg flex items-center justify-center">
+          <span className="text-white font-bold text-xl">PLV</span>
+        </div>
+        <div>
+          <h1 className="text-xl font-bold text-green-800">Prathiba Lanka</h1>
+          <p className="text-xs text-gray-500 tracking-wide">VOYAGES</p>
+        </div>
+      </div>
+
+      {/* Desktop Navigation */}
+      <nav className="hidden lg:flex items-center space-x-8">
+        {[
+          "Home",
+          "Tour Packages",
+          "Hotels",
+          "Destinations",
+          "Reviews",
+          "Contact",
+        ].map((item) => (
+          <a
+            key={item}
+            href={`#${item.toLowerCase().replace(/\s+/g, "-")}`}
+            className="text-gray-700 hover:text-green-800 font-medium transition-all"
+          >
+            {item}
+          </a>
+        ))}
+      </nav>
+
+      {/* Right Actions */}
+      <div className="flex items-center space-x-4">
+        {/* WhatsApp Button */}
+        <button className="hidden md:flex items-center space-x-2 text-green-800 font-medium hover:text-yellow-500 transition">
+          <svg
+            className="w-5 h-5"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path d="M19.05 4.91A9.816 9.816 0 0012.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01zm-7.01 15.24c-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.05-.2-.32a8.11 8.11 0 01-1.23-4.29c0-4.47 3.64-8.1 8.11-8.1 2.16 0 4.2.84 5.73 2.37a8.088 8.088 0 012.37 5.73c.01 4.47-3.63 8.1-8.09 8.1z" />
+          </svg>
+          <span>WhatsApp</span>
+        </button>
+
+        {/* CTA Button */}
+<a href="/login">
+  <button className="bg-green-800 text-white px-6 py-2 rounded-lg font-medium hover:bg-yellow-500 hover:text-black transition-all shadow-md hover:shadow-lg">
+    Plan My Trip
+  </button>
+</a>
+      </div>
+
+      {/* Mobile Menu Icon */}
+      <button className="lg:hidden text-green-900">
+        <svg
+          className="w-8 h-8"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path strokeLinecap="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
       <section
         id="hero"
         className="relative h-[90vh] bg-cover bg-center flex items-center"

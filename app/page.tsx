@@ -1,8 +1,18 @@
 'use client';
 import HomePage from "@/components/HomePage";
+import Sidebar from "@/components/DashboardPage";
+
 
 function App() {
-  return <HomePage />;
-}
+  return(
+    <div>
+      <Sidebar />
+      <HomePage />
 
+
+
+    </div>
+  );
+
+}
 export default App;
