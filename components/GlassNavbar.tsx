@@ -57,7 +57,7 @@ export default function Navbar() {
 
             {/* Login Button */}
             <Link
-              href="/login"
+              href="/auth"
               className="
                 ml-2 px-5 py-2 text-sm rounded-full 
                 bg-white/20 backdrop-blur-xl 
