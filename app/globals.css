@@ -50,3 +50,283 @@ body {
   0% { transform: scaleX(0) rotate(2deg); opacity: 0; }
   100% { transform: scaleX(1) rotate(2deg); opacity: 1; }
 }
+
+/* whole white card fade-up */
+.about-card {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: aboutCardIn 0.8s ease-out forwards;
+}
+
+@keyframes aboutCardIn {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+/* left side */
+.about-left {
+  opacity: 0;
+  transform: translateX(-30px);
+  animation: aboutLeftIn 0.9s ease-out forwards;
+  animation-delay: 0.15s;
+}
+
+@keyframes aboutLeftIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* center image */
+.about-center-image {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: aboutCenterIn 1s ease-out forwards;
+  animation-delay: 0.25s;
+}
+
+@keyframes aboutCenterIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* right side */
+.about-right {
+  opacity: 0;
+  transform: translateX(30px);
+  animation: aboutRightIn 0.9s ease-out forwards;
+  animation-delay: 0.3s;
+}
+
+@keyframes aboutRightIn {
+  0% {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* top-right image gentle float */
+.about-right-image {
+  animation: aboutImageFloat 7s ease-in-out infinite alternate;
+}
+
+@keyframes aboutImageFloat {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-8px);
+  }
+}
+
+/* ready-box small glow */
+.ready-box {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.35);
+}
+
+/* Additional improvements for smoother performance */
+@media (max-width: 768px) {
+  /* Adjusting the translate values for better responsiveness */
+  .about-left, .about-right {
+    transform: translateX(0);
+  }
+
+  .about-center-image {
+    transform: translateY(10px);
+  }
+}
+
+/* Line 1 animation (Discover Sri Lanka) */
+.hero-line-top {
+  opacity: 0;
+  transform: translateY(20px) scale(0.9);
+  animation: heroLineTop 1.8s ease-out forwards;
+}
+
+@keyframes heroLineTop {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+    filter: blur(3px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* Line 2 animation (Hello Travels) */
+.hero-line-main {
+  opacity: 0;
+  transform: translateY(-10px) scale(1.1);
+  animation: heroLineMain 2.6s ease-out forwards;
+}
+
+@keyframes heroLineMain {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px) scale(1.1);
+    filter: blur(3px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* Underline animations (draw from left to right) */
+@keyframes drawLine1 {
+  0% { transform: scaleX(0) rotate(-2deg); opacity: 0; }
+  100% { transform: scaleX(1) rotate(-2deg); opacity: 1; }
+}
+
+@keyframes drawLine2 {
+  0% { transform: scaleX(0) rotate(1deg); opacity: 0; }
+  100% { transform: scaleX(1) rotate(1deg); opacity: 1; }
+}
+
+@keyframes drawLine3 {
+  0% { transform: scaleX(0) rotate(-1deg); opacity: 0; }
+  100% { transform: scaleX(1) rotate(-1deg); opacity: 1; }
+}
+
+.animate-drawLine1 { animation: drawLine1 0.6s ease forwards 0.2s; }
+.animate-drawLine2 { animation: drawLine2 0.7s ease forwards 0.3s; }
+.animate-drawLine3 { animation: drawLine3 0.8s ease forwards 0.4s; }
+
+/* "You all welcome to Sri Lanka" – start under Hello Travels and come down */
+.hero-subline {
+  opacity: 0;
+  transform: translateY(0); /* start closer to Hello Travels */
+  animation: heroSubline 1.6s ease-out forwards;
+  animation-delay: 0.8s; /* start after main text + underline */
+}
+
+@keyframes heroSubline {
+  0% {
+    opacity: 0;
+    transform: translateY(0);  
+    animation: heroSubline 1.6s ease-out forwards;    /* begins just under Hello Travels */
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(5px); 
+    animation: heroSubline 1.6s ease-out forwards;  /* moves down smoothly */
+  }
+  
+}
+
+/* Button slide-in from right → center */
+.hero-button-slide {
+  opacity: 0;
+  transform: translateX(80px);  /* start from right */
+  animation: heroButtonSlide 1.4s ease-out forwards;
+  animation-delay: 1.4s; /* starts after welcome text */
+}
+
+/* Button slide-in from LEFT → center with soft glow + micro-bounce */
+.hero-button-slide {
+  opacity: 0;
+  transform: translateX(-120px); /* start from left */
+  animation: heroButtonSlide 2s ease-out forwards;
+  animation-delay: 1.4s; /* starts after text appears (adjust if you want) */
+}
+/* Bigger, softer, more premium glow */
+@keyframes heroButtonSlide {
+  0% {
+    opacity: 0;
+    transform: translateX(-120px) scale(0.95);
+    box-shadow: 0 0 0 rgba(255, 200, 60, 0); /* no glow at start */
+  }
+  60% {
+    opacity: 1;
+    transform: translateX(15px) scale(1.05); /* small overshoot */
+    box-shadow: 0 0 45px rgba(255, 200, 60, 0.85); /* ⭐ bright golden glow */
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    box-shadow: 
+      0 0 25px rgba(255, 200, 60, 0.55),   /* main glow */
+      0 0 50px rgba(255, 200, 60, 0.35);   /* outer soft halo */
+  }
+}
+
+/* Search card animation – come from bottom to top */
+.search-slide-up {
+  opacity: 0;
+  transform: translateY(60px);  /* smaller movement => less scroll flicker */
+  animation: searchSlideUp 1.2s ease-out forwards;
+  animation-delay: 1s;
+}
+
+@keyframes searchSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(60px);
+    filter: blur(4px);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-4px);  /* tiny overshoot for premium feel */
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);     /* settle down */
+  }
+}
+
+/* TOP → DOWN animation */
+.service-card {
+  opacity: 0;
+  transform: translateY(-40px);   /* start higher */
+  animation: cardDrop 0.9s ease-out forwards;
+}
+
+/* Delay each card slightly */
+.service-card:nth-child(1) { animation-delay: 0.1s; }
+.service-card:nth-child(2) { animation-delay: 0.25s; }
+.service-card:nth-child(3) { animation-delay: 0.4s; }
+.service-card:nth-child(4) { animation-delay: 0.55s; }
+
+@keyframes cardDrop {
+  0% {
+    opacity: 0;
+    transform: translateY(-40px);
+    filter: blur(4px);
+  }
+  70% {
+    transform: translateY(5px); /* slight overshoot for premium feel */
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
