@@ -56,10 +56,22 @@ body {
   100% { transform: scaleX(1) rotate(2deg); opacity: 1; }
 }
 
+/* === ABOUT SECTION SCROLL ANIMATIONS === */
+
+/* Base state: hidden / offset */
+.about-card,
+.about-left,
+.about-center-image,
+.about-right {
+  opacity: 0;
+}
+
 /* whole white card fade-up */
 .about-card {
-  opacity: 0;
   transform: translateY(30px);
+}
+
+.about-card.in-view {
   animation: aboutCardIn 0.8s ease-out forwards;
 }
 
@@ -78,8 +90,10 @@ body {
 
 /* left side */
 .about-left {
-  opacity: 0;
   transform: translateX(-30px);
+}
+
+.about-left.in-view {
   animation: aboutLeftIn 0.9s ease-out forwards;
   animation-delay: 0.15s;
 }
@@ -97,8 +111,10 @@ body {
 
 /* center image */
 .about-center-image {
-  opacity: 0;
   transform: translateY(20px);
+}
+
+.about-center-image.in-view {
   animation: aboutCenterIn 1s ease-out forwards;
   animation-delay: 0.25s;
 }
@@ -116,8 +132,10 @@ body {
 
 /* right side */
 .about-right {
-  opacity: 0;
   transform: translateX(30px);
+}
+
+.about-right.in-view {
   animation: aboutRightIn 0.9s ease-out forwards;
   animation-delay: 0.3s;
 }
@@ -133,18 +151,14 @@ body {
   }
 }
 
-/* top-right image gentle float */
+/* top-right image gentle float (same as before) */
 .about-right-image {
   animation: aboutImageFloat 7s ease-in-out infinite alternate;
 }
 
 @keyframes aboutImageFloat {
-  0% {
-    transform: translateY(0);
-  }
-  100% {
-    transform: translateY(-8px);
-  }
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-8px); }
 }
 
 /* ready-box small glow */
@@ -152,13 +166,11 @@ body {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.35);
 }
 
-/* Additional improvements for smoother performance */
+/* Mobile tweak */
 @media (max-width: 768px) {
-  /* Adjusting the translate values for better responsiveness */
   .about-left, .about-right {
     transform: translateX(0);
   }
-
   .about-center-image {
     transform: translateY(10px);
   }
@@ -283,11 +295,16 @@ body {
 }
 
 /* Search card animation – come from bottom to top */
+/* Search card animation – come from bottom to top */
 .search-slide-up {
   opacity: 0;
-  transform: translateY(60px);  /* smaller movement => less scroll flicker */
+  transform: translateY(60px);  /* start lower */
+}
+
+/* Only animate when in view */
+.search-slide-up.in-view {
   animation: searchSlideUp 1.2s ease-out forwards;
-  animation-delay: 1s;
+  animation-delay: 0.2s;  /* adjust if you want */
 }
 
 @keyframes searchSlideUp {
@@ -306,19 +323,22 @@ body {
     transform: translateY(0);     /* settle down */
   }
 }
-
-/* TOP → DOWN animation */
+/* TOP → DOWN animation (base state) */
 .service-card {
   opacity: 0;
   transform: translateY(-40px);   /* start higher */
+}
+
+/* Animate only when in view */
+.service-card.in-view {
   animation: cardDrop 0.9s ease-out forwards;
 }
 
-/* Delay each card slightly */
-.service-card:nth-child(1) { animation-delay: 0.1s; }
-.service-card:nth-child(2) { animation-delay: 0.25s; }
-.service-card:nth-child(3) { animation-delay: 0.4s; }
-.service-card:nth-child(4) { animation-delay: 0.55s; }
+/* Delay each card slightly (stagger effect) */
+.service-card.in-view:nth-child(1) { animation-delay: 0.1s; }
+.service-card.in-view:nth-child(2) { animation-delay: 0.25s; }
+.service-card.in-view:nth-child(3) { animation-delay: 0.4s; }
+.service-card.in-view:nth-child(4) { animation-delay: 0.55s; }
 
 @keyframes cardDrop {
   0% {
