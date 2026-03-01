@@ -71,7 +71,7 @@ export default function AboutSection() {
 
             <p className="text-sm md:text-base text-gray-600 leading-relaxed">
               Every trip is crafted with local insight — hidden gems, scenic views,
-              cultural stories.
+              cultural stories. 
             </p>
           </div>
         </div>
