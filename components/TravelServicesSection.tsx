@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import "./styles/services.css";
+
 
 export default function TravelServicesSection() {
   return (

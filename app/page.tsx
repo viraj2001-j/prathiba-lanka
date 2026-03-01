@@ -7,7 +7,7 @@ export default function HomePage() {
   return (
     <main>
       {/* Hero + floating search */}
-      <div className="relative overflow-hidden">
+      <div className="relative overflow-hidden bg-gradient-to-r from-green-600 to-white">
         <HeroSection />
 
         {/* Only SearchBox has px-4 */}

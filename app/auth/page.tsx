@@ -1,15 +1,38 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 type Mode = "login" | "signup";
 
+const BACKGROUND_IMAGES = [
+  "/hero/srilanka-1.jpg",
+  "/hero/srilanka-2.jpg",
+  "/hero/srilanka-3.jpg",
+
+];
+
 export default function AuthPage() {
   const [mode, setMode] = useState<Mode>("login");
+  const [bgIndex, setBgIndex] = useState(0);
   const isLogin = mode === "login";
 
-  // Keep the diagonal highlight but use our brand colours
+  // 🔁 Background carousel logic
+useEffect(() => {
+  // preload images
+  BACKGROUND_IMAGES.forEach((src) => {
+    const img = new Image();
+    img.src = src;
+  });
+
+  const id = setInterval(() => {
+    setBgIndex((prev) => (prev + 1) % BACKGROUND_IMAGES.length);
+  }, 3000); // or whatever time you want
+
+  return () => clearInterval(id);
+}, []);
+  
+  // Diagonal highlight for the card (unchanged)
   const clipPath = isLogin
     ? "polygon(0% 0%, 85% 0%, 55% 100%, 0% 100%)"
     : "polygon(15% 0%, 100% 0%, 100% 100%, 45% 100%)";
@@ -21,21 +44,27 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-slate-950">
+    <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* === Simple Swapping Background Image (no colors) === */}
+      <div className="absolute inset-0 z-0">
+        <img
+          src={BACKGROUND_IMAGES[bgIndex]}
+          alt="Background"
+          className="w-full h-full object-cover"
+        />
+        {/* Dark overlay so content is readable */}
+        <div className="absolute inset-0 bg-black/40" />
+      </div>
 
-      {/* === Background Glow Effects (match hero tones) === */}
-      <div className="absolute w-[520px] h-[520px] bg-emerald-500/20 blur-[120px] rounded-full top-[-120px] left-[-140px]" />
-      <div className="absolute w-[420px] h-[420px] bg-teal-500/25 blur-[120px] rounded-full bottom-[-100px] right-[-80px]" />
-      <div className="absolute inset-0 bg-gradient-to-b from-slate-950/40 via-slate-950/60 to-slate-950/90" />
-
-      <div className="relative w-full max-w-5xl h-[560px] px-4 md:px-6">
+      {/* === ORIGINAL CARD (unchanged) === */}
+      <div className="relative z-10 w-full max-w-5xl h-[560px] px-4 md:px-6">
         <motion.div
           initial={{ scale: 0.95, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.6 }}
           className="relative h-full w-full rounded-3xl backdrop-blur-2xl bg-white/5 border border-white/10 shadow-[0_24px_80px_rgba(0,0,0,0.7)] overflow-hidden"
         >
-          {/* Diagonal Animated Overlay – now emerald/teal + amber */}
+          {/* Diagonal Animated Overlay – emerald/teal + amber (card design) */}
           <motion.div
             className="absolute inset-0 bg-gradient-to-br from-emerald-700 via-teal-700 to-slate-950"
             initial={false}
@@ -47,7 +76,7 @@ export default function AuthPage() {
           <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 h-full">
             {/* LEFT SIDE */}
             <div className="flex flex-col justify-center px-8 md:px-12">
-              {/* Small brand tag for consistency */}
+              {/* Small brand tag */}
               <p className="text-xs uppercase tracking-[0.25em] text-emerald-200/80 mb-4">
                 Hello Travels • Prathiba Lanka Voyages
               </p>
@@ -67,7 +96,8 @@ export default function AuthPage() {
                       Welcome back, traveler
                     </h2>
                     <p className="text-sm md:text-base text-emerald-100/80 mb-8">
-                      Sign in to manage your bookings and continue planning your Sri Lanka journey.
+                      Sign in to manage your bookings and continue planning your
+                      Sri Lanka journey.
                     </p>
 
                     <form className="space-y-6">
@@ -84,7 +114,10 @@ export default function AuthPage() {
 
                       <div className="flex items-center justify-between text-xs md:text-sm">
                         <label className="flex items-center gap-2 text-emerald-100/80">
-                          <input type="checkbox" className="accent-emerald-400" />
+                          <input
+                            type="checkbox"
+                            className="accent-emerald-400"
+                          />
                           Remember me
                         </label>
                         <button
@@ -122,8 +155,8 @@ export default function AuthPage() {
                       Start your Sri Lanka story
                     </h2>
                     <p className="text-sm md:text-base text-emerald-50/90 leading-relaxed">
-                      Create your account and keep all your itineraries, transfers,
-                      and hotel details in one beautiful dashboard.
+                      Create your account and keep all your itineraries,
+                      transfers, and hotel details in one beautiful dashboard.
                     </p>
 
                     <div className="mt-8 space-y-3 text-sm text-emerald-50/80">

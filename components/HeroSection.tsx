@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import "./styles/hero.css";
+
 
 const heroImages = [
   "/hero/srilanka-1.jpg",

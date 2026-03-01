@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import "./styles/about.css";
+
 
 export default function AboutSection() {
   return (
