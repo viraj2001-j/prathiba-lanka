@@ -1,18 +1,24 @@
-'use client';
-import HomePage from "@/components/HomePage";
-import Sidebar from "@/components/DashboardPage";
+import AboutSection from "@/components/AboutSection";
+import HeroSection from "@/components/HeroSection";
+import SearchBox from "@/components/SearchBox";
+import TravelServicesSection from "@/components/TravelServicesSection";
 
+export default function HomePage() {
+  return (
+    <main>
+      {/* Hero + floating search */}
+      <div className="relative overflow-hidden">
+        <HeroSection />
 
-function App() {
-  return(
-    <div>
-      <Sidebar />
-      <HomePage />
+        {/* Only SearchBox has px-4 */}
+        <div className="-mt-16 relative z-30 px-4">
+          <SearchBox />
+        </div>
+      </div>
 
-
-
-    </div>
+      {/* About section full width, no padding wrapper */}
+      <AboutSection />
+      <TravelServicesSection />
+    </main>
   );
-
 }
-export default App;

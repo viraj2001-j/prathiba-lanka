@@ -1,0 +1,142 @@
+/* Line 1 animation (Discover Sri Lanka) */
+.hero-line-top {
+  opacity: 0;
+  transform: translateY(20px) scale(0.9);
+  animation: heroLineTop 1.8s ease-out forwards;
+}
+
+@keyframes heroLineTop {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+    filter: blur(3px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* Line 2 animation (Hello Travels) */
+.hero-line-main {
+  opacity: 0;
+  transform: translateY(-10px) scale(1.1);
+  animation: heroLineMain 2.6s ease-out forwards;
+}
+
+@keyframes heroLineMain {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px) scale(1.1);
+    filter: blur(3px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* Underline animations (draw from left to right) */
+@keyframes drawLine1 {
+  0% { transform: scaleX(0) rotate(-2deg); opacity: 0; }
+  100% { transform: scaleX(1) rotate(-2deg); opacity: 1; }
+}
+
+@keyframes drawLine2 {
+  0% { transform: scaleX(0) rotate(1deg); opacity: 0; }
+  100% { transform: scaleX(1) rotate(1deg); opacity: 1; }
+}
+
+@keyframes drawLine3 {
+  0% { transform: scaleX(0) rotate(-1deg); opacity: 0; }
+  100% { transform: scaleX(1) rotate(-1deg); opacity: 1; }
+}
+
+.animate-drawLine1 { animation: drawLine1 0.6s ease forwards 0.2s; }
+.animate-drawLine2 { animation: drawLine2 0.7s ease forwards 0.3s; }
+.animate-drawLine3 { animation: drawLine3 0.8s ease forwards 0.4s; }
+
+/* "You all welcome to Sri Lanka" – start under Hello Travels and come down */
+.hero-subline {
+  opacity: 0;
+  transform: translateY(0); /* start closer to Hello Travels */
+  animation: heroSubline 1.6s ease-out forwards;
+  animation-delay: 0.8s; /* start after main text + underline */
+}
+
+@keyframes heroSubline {
+  0% {
+    opacity: 0;
+    transform: translateY(0);  
+    animation: heroSubline 1.6s ease-out forwards;    /* begins just under Hello Travels */
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(5px); 
+    animation: heroSubline 1.6s ease-out forwards;  /* moves down smoothly */
+  }
+  
+}
+
+/* Button slide-in from right → center */
+.hero-button-slide {
+  opacity: 0;
+  transform: translateX(80px);  /* start from right */
+  animation: heroButtonSlide 1.4s ease-out forwards;
+  animation-delay: 1.4s; /* starts after welcome text */
+}
+
+/* Button slide-in from LEFT → center with soft glow + micro-bounce */
+.hero-button-slide {
+  opacity: 0;
+  transform: translateX(-120px); /* start from left */
+  animation: heroButtonSlide 2s ease-out forwards;
+  animation-delay: 1.4s; /* starts after text appears (adjust if you want) */
+}
+/* Bigger, softer, more premium glow */
+@keyframes heroButtonSlide {
+  0% {
+    opacity: 0;
+    transform: translateX(-120px) scale(0.95);
+    box-shadow: 0 0 0 rgba(255, 200, 60, 0); /* no glow at start */
+  }
+  60% {
+    opacity: 1;
+    transform: translateX(15px) scale(1.05); /* small overshoot */
+    box-shadow: 0 0 45px rgba(255, 200, 60, 0.85); /* ⭐ bright golden glow */
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    box-shadow: 
+      0 0 25px rgba(255, 200, 60, 0.55),   /* main glow */
+      0 0 50px rgba(255, 200, 60, 0.35);   /* outer soft halo */
+  }
+}
+
+/* Search card animation – come from bottom to top */
+.search-slide-up {
+  opacity: 0;
+  transform: translateY(60px);  /* smaller movement => less scroll flicker */
+  animation: searchSlideUp 1.2s ease-out forwards;
+  animation-delay: 1s;
+}
+
+@keyframes searchSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(60px);
+    filter: blur(4px);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-4px);  /* tiny overshoot for premium feel */
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);     /* settle down */
+  }
+}

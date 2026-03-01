@@ -40,3 +40,13 @@ body {
 .animate-breathe {
   animation: breathe 4s ease-in-out infinite;
 }
+
+@keyframes drawLine1 {
+  0% { transform: scaleX(0) rotate(-3deg); opacity: 0; }
+  100% { transform: scaleX(1) rotate(-3deg); opacity: 1; }
+}
+
+@keyframes drawLine2 {
+  0% { transform: scaleX(0) rotate(2deg); opacity: 0; }
+  100% { transform: scaleX(1) rotate(2deg); opacity: 1; }
+}

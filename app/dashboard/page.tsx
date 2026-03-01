@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import Sidebar from "@/components/Sidebar";
+import HomePage from "../page";
 
 const DashboardPage = () => {
   return (

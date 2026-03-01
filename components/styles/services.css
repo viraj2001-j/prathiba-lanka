@@ -1,0 +1,28 @@
+/* TOP → DOWN animation */
+.service-card {
+  opacity: 0;
+  transform: translateY(-40px);   /* start higher */
+  animation: cardDrop 0.9s ease-out forwards;
+}
+
+/* Delay each card slightly */
+.service-card:nth-child(1) { animation-delay: 0.1s; }
+.service-card:nth-child(2) { animation-delay: 0.25s; }
+.service-card:nth-child(3) { animation-delay: 0.4s; }
+.service-card:nth-child(4) { animation-delay: 0.55s; }
+
+@keyframes cardDrop {
+  0% {
+    opacity: 0;
+    transform: translateY(-40px);
+    filter: blur(4px);
+  }
+  70% {
+    transform: translateY(5px); /* slight overshoot for premium feel */
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
