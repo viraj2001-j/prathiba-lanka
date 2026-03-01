@@ -7,7 +7,8 @@ export default function HomePage() {
   return (
     <main>
       {/* Hero + floating search */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-green-600 to-white">
+      <div className="bg-gradient-to-r from-green-600 to-white">
+      <div className="relative overflow-hidden ">
         <HeroSection />
 
         {/* Only SearchBox has px-4 */}
@@ -19,6 +20,7 @@ export default function HomePage() {
       {/* About section full width, no padding wrapper */}
       <AboutSection />
       <TravelServicesSection />
+      </div>
     </main>
   );
 }
