@@ -284,7 +284,7 @@ function BackgroundCarousel() {
   useEffect(() => {
     const interval = setInterval(() => {
       setIndex((prev) => (prev + 1) % images.length);
-    }, 6000); // every 6 seconds
+    }, 6000);
     return () => clearInterval(interval);
   }, []);
 
@@ -310,6 +310,7 @@ function DashboardCard({ children }: { children: ReactNode }) {
       bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-4
       shadow-[0_6px_20px_rgba(0,0,0,0.5)]
       hover:shadow-[0_10px_30px_rgba(0,0,0,0.6)] transition-all duration-300
+      text-white
     ">
       {children}
     </div>
@@ -329,7 +330,7 @@ function DashboardStats() {
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
       {stats.map((s) => (
         <DashboardCard key={s.label}>
-          <p className="text-gray-900 text-xs">{s.label}</p>
+          <p className="text-xs">{s.label}</p>
           <h3 className="text-xl font-bold mt-1 text-amber-300">{s.value}</h3>
         </DashboardCard>
       ))}
@@ -347,10 +348,11 @@ function DashboardNavbar() {
       shadow-[0_6px_20px_rgba(0,0,0,0.3)]
       flex items-center justify-between px-4
       z-10
+      text-white
     ">
-      <h2 className="text-sm font-medium text-gray-900">Dashboard</h2>
+      <h2 className="text-sm font-medium">Dashboard</h2>
       <div className="flex items-center gap-2">
-        <span className="text-gray-900 text-sm">Viraj</span>
+        <span className="text-sm">Viraj</span>
         <div className="w-8 h-8 rounded-full bg-white/25 shadow-inner shadow-white/20 backdrop-blur-lg"></div>
       </div>
     </header>
@@ -375,18 +377,19 @@ function DashboardSidebar() {
       h-screen backdrop-blur-xl bg-white/10 border-r border-white/10 shadow-xl
       transition-all duration-500 flex flex-col justify-between
       ${collapsed ? "w-16" : "w-48"}
+      text-white
     `}>
       <div>
         <div className="flex items-center justify-between px-3 py-4">
           {!collapsed && (
-            <h1 className="text-lg font-semibold tracking-wide text-gray-900">Hello Travels</h1>
+            <h1 className="text-lg font-semibold tracking-wide">Hello Travels</h1>
           )}
           <button onClick={() => setCollapsed(!collapsed)} className="p-2 rounded-lg hover:bg-white/10 transition">
             <ChevronLeft className={`transition-transform duration-500 ${collapsed ? "rotate-180" : ""}`} />
           </button>
         </div>
 
-        <nav className="mt-2 space-y-1 text-gray-900">
+        <nav className="mt-2 space-y-1">
           {menuItems.map((item) => (
             <MenuItem
               key={item.label}
@@ -422,7 +425,7 @@ function MenuItem({ icon, label, collapsed, active, onClick }: MenuItemProps) {
       onClick={onClick}
       className={`
         relative w-full flex items-center gap-2 px-3 py-2
-        rounded-lg text-left text-gray-900
+        rounded-lg text-left
         hover:bg-white/10 transition-all duration-300
         ${active ? "bg-white/15 shadow-md scale-[1.02]" : ""}
       `}
@@ -438,10 +441,11 @@ function MenuItem({ icon, label, collapsed, active, onClick }: MenuItemProps) {
 function DashboardFooter() {
   return (
     <footer className="
-      w-full h-10 text-center text-gray-500 text-xs
+      w-full h-10 text-center text-xs
       bg-white/10 backdrop-blur-lg border-t border-white/10
       shadow-inner mt-auto
       flex items-center justify-center
+      text-white
     ">
       © {new Date().getFullYear()} Hello Travels. All rights reserved.
     </footer>
@@ -451,7 +455,7 @@ function DashboardFooter() {
 // ====== DASHBOARD PAGE ======
 export default function DashboardPage() {
   return (
-    <main className="relative flex min-h-screen text-gray-900 overflow-hidden bg-[#0f172a]">
+    <main className="relative flex min-h-screen overflow-hidden bg-[#0f172a]">
       {/* Background carousel */}
       <BackgroundCarousel />
 
