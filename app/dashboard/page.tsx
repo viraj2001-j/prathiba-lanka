@@ -455,7 +455,7 @@ function DashboardFooter() {
 // ====== DASHBOARD PAGE ======
 export default function DashboardPage() {
   return (
-    <main className="relative flex min-h-screen overflow-hidden bg-[#0f172a]">
+    <main className="relative flex min-h-screen overflow-hidden bg-[#0f2a22]">
       {/* Background carousel */}
       <BackgroundCarousel />
 
