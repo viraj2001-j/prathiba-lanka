@@ -13,8 +13,7 @@ export default function NavbarWrapper({
   // 🔒 Pages where navbar should be hidden (auth pages)
   const hideNavbar =
     pathname.startsWith("/auth") ||
-    pathname.startsWith("/login") ||
-    pathname.startsWith("/signup") ||
+    pathname.startsWith("/dashboard") ||
     pathname.startsWith("/register");
 
   return (

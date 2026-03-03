@@ -1,90 +1,256 @@
 "use client";
-import React from "react";
-import Sidebar from "@/components/Sidebar";
-import HomePage from "../page";
 
-const DashboardPage = () => {
+import { useState, useEffect, ReactNode } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  LayoutDashboard,
+  CalendarCheck,
+  Hotel,
+  Map,
+  Users,
+  LogOut,
+  ChevronLeft,
+} from "lucide-react";
+
+// ====== BACKGROUND CAROUSEL ======
+const images = [
+  "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80",
+  "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=1600&q=80",
+  "https://images.unsplash.com/photo-1491553895911-0055eca6402d?auto=format&fit=crop&w=1600&q=80",
+  "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80",
+  "https://www.bluelankatours.com/wp-content/uploads/2020/02/sinharaja-Rain-Forest.jpg",
+];
+
+function BackgroundCarousel() {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prev) => (prev + 1) % images.length);
+    }, 8000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={index}
+        className="absolute inset-0 bg-cover bg-center opacity-20 z-0"
+        style={{ backgroundImage: `url(${images[index]})` }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 1.5, ease: "easeInOut" }}
+      />
+    </AnimatePresence>
+  );
+}
 
-      {/* Sidebar */}
-      <Sidebar />
-
-      {/* Main Dashboard Content */}
-      <div className="flex-1 p-6">
-
-        <h1 className="text-3xl font-bold text-green-900 mb-8">
-          Dashboard Overview
-        </h1>
-
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-
-          <div className="bg-white shadow p-6 rounded-xl border border-gray-100">
-            <p className="text-gray-500">Total Inquiries</p>
-            <h2 className="text-3xl font-bold text-green-900">128</h2>
-          </div>
-
-          <div className="bg-white shadow p-6 rounded-xl border border-gray-100">
-            <p className="text-gray-500">Upcoming Tours</p>
-            <h2 className="text-3xl font-bold text-green-900">12</h2>
-          </div>
-
-          <div className="bg-white shadow p-6 rounded-xl border border-gray-100">
-            <p className="text-gray-500">Completed Bookings</p>
-            <h2 className="text-3xl font-bold text-green-900">44</h2>
-          </div>
-
-          <div className="bg-white shadow p-6 rounded-xl border border-gray-100">
-            <p className="text-gray-500">Pending Payments</p>
-            <h2 className="text-3xl font-bold text-red-500">6</h2>
-          </div>
-
-        </div>
-
-        {/* Charts + Inquiries */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
-          {/* Chart Placeholder */}
-          <div className="bg-white p-6 rounded-xl shadow border border-gray-100 lg:col-span-2">
-            <h2 className="text-xl font-semibold text-green-900 mb-4">
-              Monthly Bookings
-            </h2>
-
-            <div className="h-64 bg-gray-50 rounded-lg border flex items-center justify-center">
-              <p className="text-gray-400">[Chart Placeholder]</p>
-            </div>
-          </div>
-
-          {/* Recent Inquiries */}
-          <div className="bg-white p-6 rounded-xl shadow border border-gray-100">
-            <h2 className="text-xl font-semibold text-green-900 mb-4">
-              Recent Inquiries
-            </h2>
-
-            <div className="space-y-4">
-              <div className="p-4 bg-gray-50 rounded-lg border">
-                <p className="font-medium">John Doe</p>
-                <p className="text-sm text-gray-600">7 Days Tour • Pending</p>
-              </div>
-
-              <div className="p-4 bg-gray-50 rounded-lg border">
-                <p className="font-medium">Maria Silva</p>
-                <p className="text-sm text-gray-600">Honeymoon • Confirmed</p>
-              </div>
-
-              <div className="p-4 bg-gray-50 rounded-lg border">
-                <p className="font-medium">Ahmed Khan</p>
-                <p className="text-sm text-gray-600">Safari Tour • Pending</p>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
+// ====== DASHBOARD CARD ======
+function DashboardCard({ children }: { children: ReactNode }) {
+  return (
+    <div className="bg-white/5 backdrop-blur-3xl border border-white/10 rounded-2xl p-6
+      shadow-[0_10px_30px_rgba(0,0,0,0.6),0_0_20px_rgba(255,255,255,0.05)]
+      hover:shadow-[0_15px_40px_rgba(0,0,0,0.7),0_0_28px_rgba(255,255,255,0.07)]
+      transition-all duration-300"
+    >
+      {children}
     </div>
   );
+}
+
+// ====== DASHBOARD STATS ======
+function DashboardStats() {
+  const stats = [
+    { label: "Total Bookings", value: 124 },
+    { label: "Pending Payments", value: 32 },
+    { label: "Upcoming Trips", value: 18 },
+    { label: "Total Revenue", value: "$42,900" },
+  ];
+
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
+      {stats.map((s) => (
+        <DashboardCard key={s.label}>
+          <p className="text-gray-300 text-sm">{s.label}</p>
+          <h3 className="text-3xl font-bold mt-2 text-amber-300">{s.value}</h3>
+        </DashboardCard>
+      ))}
+    </div>
+  );
+}
+
+// ====== DASHBOARD NAVBAR ======
+function DashboardNavbar() {
+  return (
+    <header className="w-full h-16 bg-white/5 backdrop-blur-3xl border-b border-white/10
+      shadow-[0_8px_32px_rgba(0,0,0,0.35),0_0_16px_rgba(255,255,255,0.05)]
+      flex items-center justify-between px-6 text-white z-10"
+    >
+      <h2 className="text-lg font-semibold">Dashboard</h2>
+      <div className="flex items-center gap-4">
+        <span className="text-gray-300">Viraj</span>
+        <div className="w-10 h-10 rounded-full bg-white/20 shadow-inner backdrop-blur-xl" />
+      </div>
+    </header>
+  );
+}
+
+// ====== DASHBOARD SIDEBAR ======
+function DashboardSidebar() {
+  const [collapsed, setCollapsed] = useState(false);
+  const [active, setActive] = useState("Dashboard");
+
+  const menuItems = [
+    { label: "Dashboard", icon: <LayoutDashboard size={20} /> },
+    { label: "Bookings", icon: <CalendarCheck size={20} /> },
+    { label: "Hotels", icon: <Hotel size={20} /> },
+    { label: "Packages", icon: <Map size={20} /> },
+    { label: "Customers", icon: <Users size={20} /> },
+  ];
+
+  return (
+    <aside
+      className={`
+        h-screen backdrop-blur-3xl bg-white/5 border-r border-white/10
+        shadow-[0_10px_40px_rgba(0,0,0,0.5),0_0_20px_rgba(255,255,255,0.05)]
+        transition-all duration-500 flex flex-col justify-between
+        ${collapsed ? "w-20" : "w-64"}
+      `}
+    >
+      {/* TOP */}
+      <div>
+        <div className="flex items-center justify-between px-4 py-6">
+          {!collapsed && (
+            <h1 className="text-xl font-semibold tracking-wide text-white">
+              Hello Travels
+            </h1>
+          )}
+          <button
+            onClick={() => setCollapsed(!collapsed)}
+            className="p-2 rounded-lg hover:bg-white/10 text-white transition"
+          >
+            <ChevronLeft className={`transition-transform duration-500 ${collapsed ? "rotate-180" : ""}`} />
+          </button>
+        </div>
+
+        <nav className="mt-4 space-y-2 text-white">
+          {menuItems.map((item) => (
+            <MenuItem
+              key={item.label}
+              collapsed={collapsed}
+              icon={item.icon}
+              label={item.label}
+              active={active === item.label}
+              onClick={() => setActive(item.label)}
+            />
+          ))}
+        </nav>
+      </div>
+
+      {/* BOTTOM LOGOUT */}
+      <div className="px-4 py-6">
+        <MenuItem
+          collapsed={collapsed}
+          icon={<LogOut size={20} />}
+          label="Logout"
+          active={false}
+          onClick={() => {}}
+        />
+      </div>
+    </aside>
+  );
+}
+
+// ====== SIDEBAR MENU ITEM ======
+type MenuItemProps = {
+  icon: ReactNode;
+  label: string;
+  collapsed: boolean;
+  active: boolean;
+  onClick: () => void;
 };
 
-export default DashboardPage;
+function MenuItem({ icon, label, collapsed, active, onClick }: MenuItemProps) {
+  return (
+    <button
+      onClick={onClick}
+      className={`
+        relative w-full flex items-center gap-4 px-4 py-3
+        rounded-xl text-left text-gray-200
+        hover:bg-white/10 transition-all duration-300
+        ${active ? "bg-white/15 shadow-[0_8px_24px_rgba(0,255,128,0.3)] scale-[1.02]" : ""}
+      `}
+    >
+      {active && (
+        <span className="absolute left-0 top-2 bottom-2 w-[3px] bg-amber-300 rounded-full transition-all duration-300" />
+      )}
+      <span className={`text-emerald-300 z-10 ${active ? "scale-110" : ""}`}>
+        {icon}
+      </span>
+      {!collapsed && (
+        <span className={`z-10 ${active ? "text-amber-100" : ""}`}>
+          {label}
+        </span>
+      )}
+    </button>
+  );
+}
+
+// ====== DASHBOARD FOOTER ======
+function DashboardFooter() {
+  return (
+    <footer className="
+      w-full py-6 px-8 bg-white/5 backdrop-blur-3xl border-t border-white/10
+      shadow-[0_8px_32px_rgba(0,0,0,0.35),0_0_16px_rgba(255,255,255,0.05)]
+      flex flex-col md:flex-row items-center justify-between text-gray-300 text-sm mt-auto
+    ">
+      <p className="mb-2 md:mb-0">
+        © {new Date().getFullYear()} Hello Travels. All rights reserved.
+      </p>
+
+      <div className="flex gap-4">
+        <a href="#" className="hover:text-amber-300 transition-colors duration-300">Privacy Policy</a>
+        <a href="#" className="hover:text-amber-300 transition-colors duration-300">Terms of Service</a>
+        <a href="#" className="hover:text-amber-300 transition-colors duration-300">Support</a>
+      </div>
+    </footer>
+  );
+}
+
+// ====== DASHBOARD PAGE ======
+export default function DashboardPage() {
+  return (
+    <main className="relative flex min-h-screen text-white overflow-hidden bg-[#0f2a1e]">
+      {/* Background carousel */}
+      <BackgroundCarousel />
+
+      {/* Floating gradient blobs */}
+      <motion.div
+        className="absolute w-[600px] h-[600px] rounded-full top-[-150px] left-[-150px] bg-indigo-500/40 blur-[140px]"
+        animate={{ x: [0, 50, 0], y: [0, 30, 0] }}
+        transition={{ repeat: Infinity, duration: 12, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute w-[500px] h-[500px] rounded-full bottom-[-120px] right-[-120px] bg-purple-500/30 blur-[140px]"
+        animate={{ x: [0, -40, 0], y: [0, -30, 0] }}
+        transition={{ repeat: Infinity, duration: 14, ease: "easeInOut" }}
+      />
+
+      {/* Sidebar */}
+      <DashboardSidebar />
+
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col relative z-10">
+        <DashboardNavbar />
+
+        <div className="p-6 flex-1">
+          <DashboardStats />
+          {/* Other sections can go here */}
+        </div>
+
+        <DashboardFooter />
+      </div>
+    </main>
+  );
+}
