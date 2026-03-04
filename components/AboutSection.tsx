@@ -44,7 +44,7 @@ export default function AboutSection() {
   }, []);
 
   return (
-    <section className="bg-gray-200 py-16 mt-0">
+    <section className="bg-white py-16 mt-0">
       <div className="w-full max-w-7xl mx-auto px-4 md:px-8">
         <div className="about-card rounded-3xl flex flex-col md:flex-row gap-6 md:gap-10 items-stretch">
           

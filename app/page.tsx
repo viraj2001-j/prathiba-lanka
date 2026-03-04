@@ -1,5 +1,10 @@
 import AboutSection from "@/components/AboutSection";
+import DetailsSection from "@/components/DetailsSection";
+import ExperienceSection from "@/components/ExperienceSection";
+import Footer from "@/components/Footer";
 import HeroSection from "@/components/HeroSection";
+import VisualStoriesSection from "@/components/StoriesSection";
+import TourCategoriesSection from "@/components/TourCategoriesSection";
 
 import TravelServicesSection from "@/components/TravelServicesSection";
 import WhyBookPrathibha from "@/components/WhyBook";
@@ -19,7 +24,13 @@ export default function HomePage() {
       {/* About section full width, no padding wrapper */}
       <AboutSection />
       <WhyBookPrathibha/>
-      <TravelServicesSection />
+      
+      <TourCategoriesSection/>
+      <TravelServicesSection/>
+      <ExperienceSection/>
+      <DetailsSection/> 
+      <VisualStoriesSection/>
+      <Footer/>
       </div>
     </main>
   );
