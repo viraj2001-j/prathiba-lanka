@@ -453,6 +453,8 @@ export default function CategoryPage() {
                   EXPLORE PACKAGE
                 </button>
               </div>
+
+              
             </div>
           ))}
         </div>
