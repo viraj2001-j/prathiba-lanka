@@ -372,7 +372,7 @@ export default function AuthPage() {
           <div className="min-h-[440px] md:min-h-[480px]">
             {/* Diagonal gradient overlay */}
             <motion.div
-              className="absolute inset-0 bg-gradient-to-br from-emerald-700 via-teal-700 to-slate-950"
+              className="absolute inset-0 bg-[#0e81ba]"
               initial={false}
               animate={{ clipPath }}
               transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
