@@ -105,7 +105,7 @@ export default function TourCategoriesSection({
   );
 
   return (
-    <section ref={sectionRef} className="relative overflow-hidden bg-[#cfeefe]">
+    <section ref={sectionRef} className="relative overflow-hidden bg-[#cffedc]">
       <div className="pointer-events-none absolute -left-20 -top-20 h-72 w-72 rounded-full bg-white/35 blur-3xl" />
       <div className="pointer-events-none absolute -right-24 -bottom-24 h-80 w-80 rounded-full bg-white/25 blur-3xl" />
 
