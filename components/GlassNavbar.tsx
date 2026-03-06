@@ -1,7 +1,19 @@
+
 "use client";
 
 import { useState } from "react";
 import Link from "next/link";
+
+const navItems = [
+  { id: 1, name: "Home", href: "/" },
+  { id: 2, name: "Packages", href: "/packages" },
+  { id: 3, name: "Hotels", href: "/hotels" },
+  { id: 4, name: "Reviews", href: "/#reviews" },
+  { id: 5, name: "Contact", href: "/contact" },
+  { id: 6, name: "Buy Cart", href: "/cart" },
+  { id: 7, name: "FAQ & Helps", href: "/#faq" },
+  { id: 8, name: "Map", href: "/map" },
+];
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -9,25 +21,30 @@ export default function Navbar() {
   return (
     <nav className="fixed top-0 left-0 w-full z-50">
       {/* Glass Background */}
-      <div className="
+      <div
+        className="
         backdrop-blur-2xl 
         bg-white/15 
         border-b border-white/20 
         shadow-[0_4px_20px_rgba(255,255,255,0.15)]
-      ">
+      "
+      >
         <div className="max-w-6xl mx-auto flex items-center justify-between px-4 py-3">
 
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
-            <div className="
+            <div
+              className="
               w-9 h-9 rounded-xl 
               bg-white/25 backdrop-blur-xl 
               flex items-center justify-center 
               text-white font-bold text-sm 
               transition group-hover:bg-white/40
-            ">
+            "
+            >
               PLV
             </div>
+
             <div className="flex flex-col leading-tight">
               <span className="text-sm font-semibold text-white group-hover:text-white/90 transition">
                 Prathiba Lanka Voyages
@@ -40,10 +57,10 @@ export default function Navbar() {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-6">
-            {["Home", "Packages", "Hotels", "Reviews", "Contact", "buy curt", "faq and helps", "map"].map((item) => (
+            {navItems.map((item) => (
               <Link
-                key={item}
-                href={`/${item.toLowerCase()}`}
+                key={item.id}
+                href={item.href}
                 className="
                   text-sm text-white/80 
                   hover:text-white 
@@ -51,7 +68,7 @@ export default function Navbar() {
                   hover:drop-shadow-[0_0px_4px_rgba(255,255,255,0.8)]
                 "
               >
-                {item}
+                {item.name}
               </Link>
             ))}
 
@@ -91,19 +108,19 @@ export default function Navbar() {
         {open && (
           <div className="md:hidden border-t border-white/20 bg-black/40 backdrop-blur-xl">
             <div className="max-w-6xl mx-auto flex flex-col px-4 py-3 gap-2">
-              {["Home", "Packages", "Hotels", "Reviews", "Contact"].map((item) => (
+              {navItems.map((item) => (
                 <Link
-                  key={item}
-                  href={`/${item.toLowerCase()}`}
+                  key={item.id}
+                  href={item.href}
                   onClick={() => setOpen(false)}
                   className="py-2 text-white/90 hover:text-white transition"
                 >
-                  {item}
+                  {item.name}
                 </Link>
               ))}
 
               <Link
-                href="/login"
+                href="/auth"
                 onClick={() => setOpen(false)}
                 className="
                   mt-2 w-full text-center 
@@ -124,3 +141,4 @@ export default function Navbar() {
     </nav>
   );
 }
+
