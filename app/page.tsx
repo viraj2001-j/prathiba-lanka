@@ -49,7 +49,7 @@ export default function HomePage() {
         <ExperienceSection />
         <DetailsSection />
         <VisualStoriesSection />
-        <Footer />
+        
       </div>
     </main>
   );
