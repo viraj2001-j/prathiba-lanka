@@ -7,6 +7,10 @@ const config: Config = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./pages/**/*.{js,ts,jsx,tsx,mdx}", // harmless if you don't use pages
   ],
+  
 };
 
 export default config;
+
+
+

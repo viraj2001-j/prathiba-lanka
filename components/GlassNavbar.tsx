@@ -11,8 +11,9 @@ const navItems = [
   { id: 4, name: "Reviews", href: "/#reviews" },
   { id: 5, name: "Contact", href: "/contact" },
   { id: 6, name: "Buy Cart", href: "/cart" },
-  { id: 7, name: "FAQ & Helps", href: "/#faq" },
+  { id: 7, name: "FAQ & Helps", href: "/faq" },
   { id: 8, name: "Map", href: "/map" },
+  { id: 9, name: "About", href: "/about" },
 ];
 
 export default function Navbar() {

@@ -68,7 +68,7 @@ export default function FAQSplitSection() {
   );
 
   return (
-    <section ref={sectionRef} className="bg-white">
+    <section ref={sectionRef} className="bg-white" id="faq">
       <div className="mx-auto max-w-7xl px-6 py-14 md:py-20">
         <div className="grid gap-10 lg:grid-cols-[1.05fr_1fr] lg:gap-12">
           {/* LEFT: Image Card */}

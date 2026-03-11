@@ -1,10 +1,11 @@
 "use client";
 
 import AboutSection from "@/components/AboutSection";
-import DetailsSection from "@/components/DetailsSection";
+
 import ExperienceSection from "@/components/ExperienceSection";
 import Footer from "@/components/Footer";
 import HeroSection from "@/components/HeroSection";
+
 import VisualStoriesSection from "@/components/StoriesSection";
 import TourCategoriesSection from "@/components/TourCategoriesSection";
 import TravelServicesSection from "@/components/TravelServicesSection";
@@ -47,7 +48,7 @@ export default function HomePage() {
 
         <TravelServicesSection />
         <ExperienceSection />
-        <DetailsSection />
+    
         <VisualStoriesSection />
         
       </div>
