@@ -98,7 +98,7 @@ export default function VisualStoriesSection() {
   };
 
   return (
-    <section ref={sectionRef} className="relative overflow-hidden bg-white">
+    <section ref={sectionRef} className="relative overflow-hidden bg-[#f9f7f2] ">
       <div className="mx-auto max-w-7xl px-6 py-20 md:py-28">
         {/* Watermark */}
         <motion.div
