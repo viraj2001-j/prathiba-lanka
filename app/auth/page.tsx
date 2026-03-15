@@ -1245,10 +1245,14 @@
 //   );
 // }
 
+
+
 "use client";
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useRouter } from "next/navigation";
+
 
 type View = "auth" | "dashboard";
 type AuthMode = "login" | "signup";
@@ -1287,6 +1291,8 @@ export default function MagicalTravelSwap() {
   const [selectedDestination, setSelectedDestination] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
+  const router = useRouter();
+  
   const isAuth = currentView === "auth";
   const isLogin = authMode === "login";
 
@@ -1314,6 +1320,8 @@ export default function MagicalTravelSwap() {
   const switchToSignup = () => setAuthMode("signup");
   const switchToLogin = () => setAuthMode("login");
 
+const switchToHome = () => router.push("/");
+
   const clipPath = isAuth
     ? isLogin
       ? "polygon(0% 0%, 84% 0%, 56% 100%, 0% 100%)"
@@ -1327,23 +1335,27 @@ export default function MagicalTravelSwap() {
     : "bg-[linear-gradient(135deg,#0b3d2e_0%,#067a47_42%,#c6a43f_100%)]";
 
   return (
-    <section className="relative min-h-screen overflow-hidden px-3 py-6 md:px-4 md:py-8">
-      {/* Background */}
+    <section className="relative min-h-screen overflow-hidden bg-[linear-gradient(180deg,#f9fcfa_0%,#f3f8f5_100%)] px-3 py-6 md:px-4 md:py-8">
+      {/* decorative background glows */}
+      <div className="pointer-events-none absolute left-0 top-10 h-72 w-72 rounded-full bg-[#cf5b8a]/10 blur-3xl" />
+      <div className="pointer-events-none absolute right-0 top-0 h-80 w-80 rounded-full bg-[#f0ab1d]/10 blur-3xl" />
+
+      {/* Background image */}
       <div className="absolute inset-0 z-0">
         <img
           src={BACKGROUND_IMAGES[bgIndex]}
           alt="Sri Lanka background"
           className="h-full w-full object-cover"
         />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,29,21,0.55),rgba(8,29,21,0.72))]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(240,171,29,0.16),transparent_24%),radial-gradient(circle_at_bottom_left,rgba(207,91,138,0.10),transparent_22%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,29,21,0.52),rgba(8,29,21,0.72))]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(240,171,29,0.18),transparent_24%),radial-gradient(circle_at_bottom_left,rgba(207,91,138,0.10),transparent_20%)]" />
       </div>
 
-      {/* Top floating switch */}
+      {/* Floating switch button */}
       <motion.button
         onClick={swapView}
         disabled={isLoading}
-        className="absolute right-4 top-4 z-20 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs font-semibold text-white backdrop-blur-md transition hover:bg-white/15"
+        className="absolute right-4 top-4 z-20 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/12 px-4 py-2 text-xs font-semibold text-white backdrop-blur-md transition hover:bg-white/18"
         whileHover={{ scale: 1.04 }}
         whileTap={{ scale: 0.96 }}
       >
@@ -1370,10 +1382,10 @@ export default function MagicalTravelSwap() {
           initial={{ scale: 0.97, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.5 }}
-          className="relative w-full overflow-hidden rounded-[30px] border border-white/12 bg-white/8 shadow-[0_24px_70px_rgba(0,0,0,0.32)] backdrop-blur-2xl"
+          className="relative w-full overflow-hidden rounded-[30px] border border-white/15 bg-[rgba(255,255,255,0.08)] shadow-[0_24px_70px_rgba(0,0,0,0.30)] backdrop-blur-2xl"
         >
           <div className="min-h-[390px] md:min-h-[440px]">
-            {/* diagonal premium overlay */}
+            {/* diagonal premium panel */}
             <motion.div
               className={`absolute inset-0 ${brandGradient}`}
               initial={false}
@@ -1396,15 +1408,15 @@ export default function MagicalTravelSwap() {
                 >
                   {isLogin ? (
                     <>
-                      {/* login form */}
+                      {/* LOGIN FORM */}
                       <div className="flex flex-col justify-center px-4 py-5 md:px-6 lg:px-8">
                         <motion.div
                           initial={{ x: -20, opacity: 0 }}
                           animate={{ x: 0, opacity: 1 }}
                           transition={{ delay: 0.18 }}
                         >
-                          <p className="mb-3 inline-flex rounded-full bg-white/10 px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.22em] text-[#f6d78f] backdrop-blur md:text-[10px]">
-                            Prathibha Lanka Voyages
+                          <p className="mb-3 inline-flex rounded-full border border-white/10 bg-white/10 px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.22em] text-[#f6d78f] backdrop-blur md:text-[10px]">
+                            Luxury Sri Lanka Travel
                           </p>
 
                           <h2
@@ -1413,9 +1425,10 @@ export default function MagicalTravelSwap() {
                           >
                             Welcome back
                           </h2>
-                          <p className="mb-5 mt-2 max-w-sm text-xs leading-6 text-white/75 md:text-sm">
-                            Sign in and continue planning your beautifully
-                            tailored Sri Lanka journey.
+
+                          <p className="mb-5 mt-2 max-w-sm text-xs leading-6 text-white/78 md:text-sm">
+                            Sign in and continue your calm, beautifully planned
+                            Sri Lanka journey.
                           </p>
 
                           <form className="space-y-3">
@@ -1435,7 +1448,7 @@ export default function MagicalTravelSwap() {
                             />
 
                             <div className="flex items-center justify-between text-[10px] md:text-[11px]">
-                              <label className="flex items-center gap-2 text-white/70">
+                              <label className="flex items-center gap-2 text-white/72">
                                 <input
                                   type="checkbox"
                                   className="accent-[#c6a43f]"
@@ -1466,11 +1479,27 @@ export default function MagicalTravelSwap() {
                             >
                               Create one
                             </button>
+
+
                           </p>
+
+                              <p className="mt-2 text-center text-[10px] text-white/70 md:text-[11px]">
+                            Back to Home{" "}
+                            <button
+                              type="button"
+                              onClick={switchToHome}
+                              className="font-semibold text-[#f6d78f] hover:text-white"
+                            >
+                              Home
+                            </button>
+
+
+                          </p>
+                          
                         </motion.div>
                       </div>
 
-                      {/* right message */}
+                      {/* LOGIN MESSAGE */}
                       <div className="hidden flex-col justify-center px-6 py-5 lg:flex lg:px-8">
                         <motion.div
                           initial={{ x: 24, opacity: 0 }}
@@ -1479,7 +1508,7 @@ export default function MagicalTravelSwap() {
                           className="ml-auto max-w-xs text-right text-white"
                         >
                           <div className="mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-white/60">
-                            Luxury Sri Lanka Travel
+                            Prathibha Lanka Voyages
                           </div>
 
                           <h3
@@ -1489,10 +1518,10 @@ export default function MagicalTravelSwap() {
                             Discover Sri Lanka
                           </h3>
 
-                          <p className="mt-3 text-xs leading-6 text-white/80 md:text-sm">
-                            Scenic highlands, ancient heritage, tropical coasts,
-                            and warm local hospitality in one unforgettable
-                            island.
+                          <p className="mt-3 text-xs leading-6 text-white/82 md:text-sm">
+                            Scenic highlands, heritage cities, golden shores,
+                            and warm island hospitality in one unforgettable
+                            destination.
                           </p>
 
                           <div className="mt-5 space-y-2.5">
@@ -1506,8 +1535,8 @@ export default function MagicalTravelSwap() {
                                 key={item}
                                 className="flex items-center justify-end gap-3 text-xs md:text-sm"
                               >
-                                <span className="text-white/85">{item}</span>
-                                <div className="h-2 w-2 rounded-full bg-[#f6d78f]" />
+                                <span className="text-white/86">{item}</span>
+                                <div className="h-2 w-2 rounded-full bg-[#f0ab1d]" />
                               </div>
                             ))}
                           </div>
@@ -1520,7 +1549,7 @@ export default function MagicalTravelSwap() {
                     </>
                   ) : (
                     <>
-                      {/* signup message */}
+                      {/* SIGNUP MESSAGE */}
                       <div className="hidden flex-col justify-center px-6 py-5 lg:flex lg:px-8">
                         <motion.div
                           initial={{ x: -24, opacity: 0 }}
@@ -1541,9 +1570,10 @@ export default function MagicalTravelSwap() {
                             Begin your island story
                           </h3>
 
-                          <p className="mt-3 text-xs leading-6 text-white/80 md:text-sm">
-                            Join travelers who choose calm planning, beautiful
-                            journeys, and thoughtful Sri Lankan experiences.
+                          <p className="mt-3 text-xs leading-6 text-white/82 md:text-sm">
+                            Join travelers who choose elegant planning,
+                            meaningful experiences, and beautifully crafted Sri
+                            Lankan journeys.
                           </p>
 
                           <div className="mt-4 flex gap-1 text-base">
@@ -1555,7 +1585,7 @@ export default function MagicalTravelSwap() {
                           </div>
 
                           <p className="mt-2 text-[11px] text-white/60">
-                            Loved by travelers seeking memorable island escapes
+                            Thoughtful service, trusted planning, memorable stays
                           </p>
 
                           <div className="mt-5 space-y-2.5 rounded-[22px] border border-white/12 bg-white/8 p-4 backdrop-blur-sm">
@@ -1567,7 +1597,7 @@ export default function MagicalTravelSwap() {
                             ].map((item) => (
                               <div
                                 key={item}
-                                className="flex items-center gap-3 text-xs text-white/85 md:text-sm"
+                                className="flex items-center gap-3 text-xs text-white/86 md:text-sm"
                               >
                                 <span className="text-[#f6d78f]">✓</span>
                                 <span>{item}</span>
@@ -1577,14 +1607,14 @@ export default function MagicalTravelSwap() {
                         </motion.div>
                       </div>
 
-                      {/* signup form */}
+                      {/* SIGNUP FORM */}
                       <div className="flex flex-col justify-center px-4 py-5 md:px-6 lg:px-8">
                         <motion.div
                           initial={{ x: 20, opacity: 0 }}
                           animate={{ x: 0, opacity: 1 }}
                           transition={{ delay: 0.18 }}
                         >
-                          <p className="mb-3 inline-flex rounded-full bg-white/10 px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.22em] text-[#f6d78f] backdrop-blur md:text-[10px]">
+                          <p className="mb-3 inline-flex rounded-full border border-white/10 bg-white/10 px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.22em] text-[#f6d78f] backdrop-blur md:text-[10px]">
                             Create your account
                           </p>
 
@@ -1594,9 +1624,10 @@ export default function MagicalTravelSwap() {
                           >
                             Start your journey
                           </h2>
-                          <p className="mb-5 mt-2 max-w-sm text-xs leading-6 text-white/75 md:text-sm">
+
+                          <p className="mb-5 mt-2 max-w-sm text-xs leading-6 text-white/78 md:text-sm">
                             Create your account and begin exploring Sri Lanka in
-                            a more personal way.
+                            a more personal, elegant way.
                           </p>
 
                           <form className="space-y-3">
@@ -1689,7 +1720,7 @@ export default function MagicalTravelSwap() {
                   transition={{ duration: 0.35 }}
                   className="relative z-10 p-4 md:p-5"
                 >
-                  {/* header */}
+                  {/* dashboard header */}
                   <div className="mb-5 flex items-center justify-between gap-4">
                     <div>
                       <motion.h2
@@ -1704,7 +1735,7 @@ export default function MagicalTravelSwap() {
                         initial={{ y: -10, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ delay: 0.1 }}
-                        className="mt-1 text-[11px] text-white/70 md:text-xs"
+                        className="mt-1 text-[11px] text-white/72 md:text-xs"
                       >
                         Welcome back, Sarah — your next island escape is waiting.
                       </motion.p>
@@ -1747,14 +1778,14 @@ export default function MagicalTravelSwap() {
                         <div className="text-lg font-semibold text-white">
                           {stat.value}
                         </div>
-                        <div className="mt-1 text-[9px] font-medium uppercase tracking-[0.16em] text-[#f6d78f]/80 md:text-[10px]">
+                        <div className="mt-1 text-[9px] font-medium uppercase tracking-[0.16em] text-[#f6d78f]/85 md:text-[10px]">
                           {stat.label}
                         </div>
                       </motion.div>
                     ))}
                   </div>
 
-                  {/* destination cards */}
+                  {/* destinations */}
                   <div className="mb-4 grid gap-3 md:grid-cols-3">
                     {DESTINATIONS.map((dest, index) => (
                       <motion.div
@@ -1774,7 +1805,7 @@ export default function MagicalTravelSwap() {
                           className="h-24 bg-cover bg-center"
                           style={{ backgroundImage: `url(${dest.image})` }}
                         >
-                          <div className="flex h-full w-full items-end bg-gradient-to-t from-[#071c14]/70 to-transparent p-3">
+                          <div className="flex h-full w-full items-end bg-gradient-to-t from-[#071c14]/72 to-transparent p-3">
                             <span
                               className="text-base font-semibold text-white"
                               style={{ fontFamily: "var(--font-playfair, serif)" }}
@@ -1793,7 +1824,7 @@ export default function MagicalTravelSwap() {
                     ))}
                   </div>
 
-                  {/* quick actions */}
+                  {/* actions */}
                   <motion.div
                     initial={{ y: 10, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
@@ -1842,7 +1873,7 @@ export default function MagicalTravelSwap() {
                         setAuthMode("login");
                       }}
                       type="button"
-                      className="text-[10px] text-white/55 transition hover:text-white/80"
+                      className="text-[10px] text-white/55 transition hover:text-white/82"
                     >
                       Not Sarah? Switch account
                     </button>
@@ -1885,10 +1916,6 @@ export default function MagicalTravelSwap() {
   );
 }
 
-/* ========================= */
-/* Reusable components */
-/* ========================= */
-
 function Input({
   label,
   type,
@@ -1904,7 +1931,7 @@ function Input({
 }) {
   return (
     <div className="space-y-1.5">
-      <label className="flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.16em] text-white/70 md:text-[11px]">
+      <label className="flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.16em] text-white/72 md:text-[11px]">
         <span className="text-[#f6d78f]">{icon}</span>
         {label}
       </label>
@@ -1936,9 +1963,9 @@ function PremiumButton({
       whileHover={{ scale: 1.015 }}
       whileTap={{ scale: 0.985 }}
       className={`
-        w-full rounded-full bg-[linear-gradient(135deg,#f0ab1d_0%,#c6a43f_100%)]
-        font-semibold text-[#17352a] shadow-[0_14px_34px_rgba(240,171,29,0.25)]
-        transition-all duration-300 hover:shadow-[0_18px_40px_rgba(240,171,29,0.35)]
+        w-full rounded-full bg-[linear-gradient(135deg,#067a47_0%,#035c35_50%,#c6a43f_100%)]
+        font-semibold text-white shadow-[0_14px_34px_rgba(6,122,71,0.26)]
+        transition-all duration-300 hover:shadow-[0_18px_40px_rgba(6,122,71,0.34)]
         ${compact ? "py-2 text-xs md:text-sm" : "py-3 text-sm"}
       `}
       type="submit"

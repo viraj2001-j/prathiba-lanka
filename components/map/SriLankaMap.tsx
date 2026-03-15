@@ -821,11 +821,25 @@
 // }
 
 
-
-
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
+import {
+  MapPinned,
+  Landmark,
+  Mountain,
+  Building2,
+  Palmtree,
+  Users,
+  ChevronLeft,
+  ChevronRight,
+  Sparkles,
+  MousePointerClick,
+  Map,
+  Compass,
+  ArrowDownRight,
+} from "lucide-react";
 
 type DistrictData = {
   id: string;
@@ -846,6 +860,30 @@ function districtImages(folder: string) {
     `/districts/${folder}/3.jpg`,
   ];
 }
+
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 24, filter: "blur(10px)" },
+  show: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: {
+      duration: 0.7,
+      ease: [0.22, 1, 0.36, 1] as const,
+    },
+  },
+};
+
+const stagger = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.08,
+      delayChildren: 0.06,
+    },
+  },
+};
 
 const DISTRICT_DATA: Record<string, DistrictData> = {
   LK11: {
@@ -1255,15 +1293,15 @@ const FALLBACK_DISTRICT: DistrictData = {
   name: "Select a district",
   province: "",
   geographicalProfile:
-    "Click any district on the map to view its geographical profile.",
+    "Click any district on the map to explore its geographical setting and regional landscape.",
   historyAndHeritage:
-    "Its history and heritage details will appear here after selection.",
+    "Its historical background and cultural heritage will appear here after you select a district.",
   economyAndInfrastructure:
-    "Economic and infrastructure highlights will be shown here.",
+    "Economic strengths, transport links, and development details will be shown here.",
   tourismAndAttractions:
-    "Tourist attractions and popular experiences will appear here.",
+    "Travel highlights, major attractions, and local experiences will appear here.",
   demographicsAndCulture:
-    "Demographic and cultural information will appear here.",
+    "Community identity, culture, and social character will appear here.",
   images: [
     "/maps/default-district.jpg",
     "/maps/default-district.jpg",
@@ -1271,15 +1309,40 @@ const FALLBACK_DISTRICT: DistrictData = {
   ],
 };
 
+type InfoCardProps = {
+  title: string;
+  text: string;
+  icon: React.ElementType;
+};
+
+function InfoCard({ title, text, icon: Icon }: InfoCardProps) {
+  return (
+    <div className="group rounded-[26px] border border-[#dfe7df] bg-white/90 p-5 shadow-[0_10px_30px_rgba(15,23,42,0.04)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(15,23,42,0.07)]">
+      <div className="mb-4 inline-flex rounded-2xl bg-[linear-gradient(135deg,rgba(22,101,52,0.10),rgba(217,119,6,0.10))] p-3 text-[#1f5c45]">
+        <Icon className="h-5 w-5" />
+      </div>
+
+      <h3 className="text-base font-semibold tracking-tight text-[#163323]">
+        {title}
+      </h3>
+
+      <p className="mt-2 text-sm leading-7 text-[#5c6e63]">{text}</p>
+    </div>
+  );
+}
+
 export default function SriLankaMap() {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const selectedPathRef = useRef<SVGPathElement | null>(null);
   const depthPathRef = useRef<SVGPathElement | null>(null);
+
   const [active, setActive] = useState<DistrictData | null>(null);
   const [slideIndex, setSlideIndex] = useState(0);
   const [moveForward, setMoveForward] = useState(true);
 
   const district = active || FALLBACK_DISTRICT;
+  const hasSelectedDistrict = !!active;
+  const districtCount = Object.keys(DISTRICT_DATA).length;
 
   useEffect(() => {
     let mounted = true;
@@ -1315,7 +1378,7 @@ export default function SriLankaMap() {
         };
 
         const resetPath = (path: SVGPathElement) => {
-          path.style.fill = "#b8d2a7";
+          path.style.fill = "#b9d4ba";
           path.style.filter = "none";
           path.style.transform = "translateY(0px) scale(1)";
         };
@@ -1324,15 +1387,15 @@ export default function SriLankaMap() {
           removeDepthLayer();
 
           const clone = path.cloneNode(true) as SVGPathElement;
-          clone.style.fill = "#86a57f";
-          clone.style.stroke = "#dfe7df";
+          clone.style.fill = "#88a88a";
+          clone.style.stroke = "#edf3ee";
           clone.style.strokeWidth = "1.1";
           clone.style.vectorEffect = "non-scaling-stroke";
           clone.style.pointerEvents = "none";
           clone.style.transformBox = "fill-box";
           clone.style.transformOrigin = "center center";
           clone.style.transform = "translateY(12px) scale(1.01)";
-          clone.style.filter = "blur(0.45px)";
+          clone.style.filter = "blur(0.4px)";
           clone.style.opacity = "0.95";
 
           path.parentNode?.insertBefore(clone, path);
@@ -1341,10 +1404,10 @@ export default function SriLankaMap() {
 
         const activatePath = (path: SVGPathElement) => {
           addDepthLayer(path);
-          path.style.fill = "#7fcf98";
+          path.style.fill = "#75c793";
           path.style.filter =
-            "drop-shadow(0 18px 24px rgba(56, 84, 73, 0.28))";
-          path.style.transform = "translateY(-18px) scale(1.05)";
+            "drop-shadow(0 16px 24px rgba(34, 74, 57, 0.24))";
+          path.style.transform = "translateY(-16px) scale(1.05)";
         };
 
         paths.forEach((path) => {
@@ -1356,16 +1419,16 @@ export default function SriLankaMap() {
             "transform 0.32s ease, fill 0.32s ease, filter 0.32s ease";
           path.style.transformBox = "fill-box";
           path.style.transformOrigin = "center center";
-          path.style.fill = "#b8d2a7";
-          path.style.stroke = "rgba(255,255,255,0.92)";
+          path.style.fill = "#b9d4ba";
+          path.style.stroke = "rgba(255,255,255,0.94)";
           path.style.strokeWidth = "1.15";
           path.style.vectorEffect = "non-scaling-stroke";
 
           const handleEnter = () => {
             if (selectedPathRef.current !== path) {
-              path.style.fill = "#a6c992";
+              path.style.fill = "#a5c998";
               path.style.filter = "drop-shadow(0 8px 12px rgba(0,0,0,0.10))";
-              path.style.transform = "translateY(-6px) scale(1.015)";
+              path.style.transform = "translateY(-5px) scale(1.015)";
             }
           };
 
@@ -1441,7 +1504,7 @@ export default function SriLankaMap() {
 
         return prev - 1;
       });
-    }, 2500);
+    }, 2800);
 
     return () => clearInterval(interval);
   }, [district, moveForward]);
@@ -1451,162 +1514,412 @@ export default function SriLankaMap() {
     setMoveForward(true);
   }, [active]);
 
+  const nextSlide = () => {
+    if (!district.images?.length) return;
+    setSlideIndex((prev) => (prev + 1) % district.images.length);
+    setMoveForward(true);
+  };
+
+  const prevSlide = () => {
+    if (!district.images?.length) return;
+    setSlideIndex((prev) =>
+      prev === 0 ? district.images.length - 1 : prev - 1
+    );
+    setMoveForward(false);
+  };
+
   return (
-    <section className="w-full">
-      <div className="mx-auto grid max-w-7xl gap-8 rounded-[28px] border border-slate-200/70 bg-white p-6 shadow-[0_20px_50px_rgba(15,23,42,0.08)] lg:grid-cols-[1.05fr_0.95fr]">
-        <div className="rounded-[24px] bg-slate-50 p-4">
-          <div
-            className="relative overflow-hidden rounded-[26px] border border-sky-100/60 p-4 md:p-6"
-            style={{
-              backgroundImage: "url('/maps/bg.png')",
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              backgroundRepeat: "no-repeat",
-            }}
-          >
-            <div
-              ref={wrapperRef}
-              className="relative z-10 mx-auto aspect-square w-full max-w-[700px]"
-            />
-          </div>
+    <section className="relative overflow-hidden bg-[linear-gradient(180deg,#f7faf7_0%,#eef5ef_100%)]">
+
+
+      
+      {/* HERO */}
+{/* HERO */}
+<section className="relative overflow-hidden">
+  <div className="absolute inset-0">
+    <motion.img
+      initial={{ scale: 1.06 }}
+      animate={{ scale: 1.12 }}
+      transition={{
+        duration: 12,
+        repeat: Infinity,
+        repeatType: "reverse",
+        ease: "easeInOut",
+      }}
+      src="https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=2400&q=80"
+      alt="Sri Lanka"
+      className="h-full w-full object-cover"
+    />
+    <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,28,20,0.34),rgba(7,28,20,0.72))]" />
+    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(240,171,29,0.18),transparent_24%),radial-gradient(circle_at_bottom_left,rgba(207,91,138,0.10),transparent_24%)]" />
+
+    <motion.div
+      animate={{ x: ["-30%", "120%"] }}
+      transition={{
+        duration: 7,
+        repeat: Infinity,
+        ease: "linear",
+        repeatDelay: 2,
+      }}
+      className="absolute inset-y-0 w-1/3 bg-gradient-to-r from-transparent via-white/10 to-transparent blur-2xl"
+    />
+  </div>
+
+  <div className="relative mx-auto max-w-7xl px-6 py-16 md:py-24">
+    <motion.div
+      variants={stagger}
+      initial="hidden"
+      animate="show"
+      className="max-w-3xl"
+    >
+      <motion.div
+        variants={fadeUp}
+        className="inline-flex rounded-full border border-white/12 bg-white/10 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-white/85 backdrop-blur-md md:text-xs"
+      >
+        Sri Lanka • District Explorer
+      </motion.div>
+
+      <motion.h1
+        variants={fadeUp}
+        className="mt-5 text-4xl font-semibold tracking-tight text-white md:text-6xl"
+        style={{ fontFamily: "var(--font-playfair, serif)" }}
+      >
+        Choose your Sri Lanka journey
+      </motion.h1>
+
+      <motion.p
+        variants={fadeUp}
+        className="mt-5 max-w-2xl text-base leading-8 text-white/80 md:text-lg"
+      >
+        Browse Sri Lanka district by district, explore geography, culture,
+        heritage, and attractions, and discover the island through a richer
+        interactive travel experience.
+      </motion.p>
+
+      <motion.div
+        variants={stagger}
+        className="mt-7 flex flex-wrap items-center gap-3"
+      >
+        <motion.span
+          variants={fadeUp}
+          className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/10 px-4 py-2 text-sm font-semibold text-white ring-1 ring-white/10 backdrop-blur"
+        >
+          {districtCount} districts
+        </motion.span>
+
+        <motion.span
+          variants={fadeUp}
+          className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/10 px-4 py-2 text-sm font-semibold text-white ring-1 ring-white/10 backdrop-blur"
+        >
+          Interactive map guide
+        </motion.span>
+      </motion.div>
+    </motion.div>
+  </div>
+</section>
+
+      {/* CONTENT */}
+      <div className="relative px-4 py-8 md:px-6 md:py-10">
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div className="absolute left-[-60px] top-16 h-60 w-60 rounded-full bg-emerald-200/25 blur-3xl" />
+          <div className="absolute right-[-60px] top-48 h-72 w-72 rounded-full bg-amber-200/20 blur-3xl" />
         </div>
 
-        <div className="rounded-[24px] bg-slate-50 p-6">
-          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-emerald-600">
-            Sri Lanka District Map
-          </p>
+        <div className="relative mx-auto max-w-7xl">
+          <div className="mb-7 max-w-3xl">
+            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200/70 bg-white/80 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.22em] text-emerald-700 backdrop-blur-md">
+              <Sparkles className="h-3.5 w-3.5" />
+              Interactive Sri Lanka Explorer
+            </div>
 
-          <h2 className="mt-3 text-3xl font-semibold text-slate-900">
-            {district.name}
-          </h2>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-[#163323] md:text-5xl">
+              Explore Sri Lanka district by district
+            </h2>
 
-          {district.province && (
-            <p className="mt-2 text-sm font-medium text-slate-500">
-              Province: {district.province}
+            <p className="mt-4 max-w-2xl text-sm leading-7 text-[#5c6e63] md:text-base">
+              Select any district on the map to discover its geography, heritage,
+              economy, culture, and travel highlights through a cleaner and more
+              immersive browsing experience.
             </p>
-          )}
-
-          <p className="mt-4 text-sm leading-6 text-slate-600">
-            Click any district on the map to view its geographical profile,
-            history and heritage, economy and infrastructure, tourism and
-            attractions, and demographics and culture.
-          </p>
-
-          <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-4">
-            <div className="text-xs uppercase tracking-[0.18em] text-slate-500">
-              Current district
-            </div>
-            <div className="mt-2 text-lg font-semibold text-slate-900">
-              {district.name}
-            </div>
-            {district.id && (
-              <div className="mt-1 text-sm text-slate-500">
-                Code: {district.id}
-              </div>
-            )}
           </div>
 
-          <div className="mt-6 space-y-5">
-            <div className="rounded-2xl border border-slate-200 bg-white p-5">
-              <h3 className="text-base font-semibold text-slate-900">
-                Geographical Profile
-              </h3>
-              <p className="mt-2 text-sm leading-6 text-slate-600">
-                {district.geographicalProfile}
-              </p>
-            </div>
+          <div className="grid items-start gap-7 lg:grid-cols-[1.02fr_0.98fr]">
+            {/* LEFT */}
+            <div className="self-start rounded-[30px] border border-white/70 bg-white/72 p-4 shadow-[0_22px_60px_rgba(15,23,42,0.06)] backdrop-blur-xl md:p-5">
+              <div
+                className="relative overflow-hidden rounded-[28px] border border-emerald-100/80 p-4 md:p-6"
+                style={{
+                  backgroundImage:
+                    "linear-gradient(180deg,rgba(255,255,255,0.68),rgba(245,250,246,0.82)), url('/maps/bg.png')",
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  backgroundRepeat: "no-repeat",
+                }}
+              >
+                <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
+                      Interactive Map
+                    </p>
+                    <h3 className="mt-1 text-xl font-semibold text-[#163323]">
+                      Sri Lanka District Guide
+                    </h3>
+                  </div>
 
-            <div className="rounded-2xl border border-slate-200 bg-white p-5">
-              <h3 className="text-base font-semibold text-slate-900">
-                History and Heritage
-              </h3>
-              <p className="mt-2 text-sm leading-6 text-slate-600">
-                {district.historyAndHeritage}
-              </p>
-            </div>
-
-            <div className="rounded-2xl border border-slate-200 bg-white p-5">
-              <h3 className="text-base font-semibold text-slate-900">
-                Economy and Infrastructure
-              </h3>
-              <p className="mt-2 text-sm leading-6 text-slate-600">
-                {district.economyAndInfrastructure}
-              </p>
-            </div>
-
-            <div className="rounded-2xl border border-slate-200 bg-white p-5">
-              <h3 className="text-base font-semibold text-slate-900">
-                Tourism and Attractions
-              </h3>
-              <p className="mt-2 text-sm leading-6 text-slate-600">
-                {district.tourismAndAttractions}
-              </p>
-            </div>
-
-            <div className="rounded-2xl border border-slate-200 bg-white p-5">
-              <h3 className="text-base font-semibold text-slate-900">
-                Demographics and Culture
-              </h3>
-              <p className="mt-2 text-sm leading-6 text-slate-600">
-                {district.demographicsAndCulture}
-              </p>
-            </div>
-
-            {district.images && district.images.length > 0 && (
-              <div className="rounded-2xl border border-slate-200 bg-white p-4">
-                <div className="mb-3 flex items-center justify-between">
-                  <h3 className="text-base font-semibold text-slate-900">
-                    District Gallery
-                  </h3>
-                  <span className="text-xs uppercase tracking-[0.16em] text-slate-500">
-                    Auto Slide
-                  </span>
+                  <div className="rounded-full border border-emerald-100 bg-white/75 px-4 py-2 text-xs font-medium text-[#5c6e63] shadow-sm">
+                    Hover and click districts
+                  </div>
                 </div>
 
-                <div className="relative overflow-hidden rounded-2xl">
+                <div className="relative rounded-[24px] border border-white/70 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.85),rgba(242,247,243,0.80))] p-3 shadow-inner">
                   <div
-                    className="flex transition-transform duration-700 ease-in-out"
-                    style={{
-                      width: `${district.images.length * 100}%`,
-                      transform: `translateX(-${
-                        slideIndex * (100 / district.images.length)
-                      }%)`,
-                    }}
-                  >
-                    {district.images.map((img, index) => (
-                      <div
-                        key={index}
-                        className="w-full flex-shrink-0"
-                        style={{ width: `${100 / district.images.length}%` }}
+                    ref={wrapperRef}
+                    className="relative z-10 mx-auto aspect-square w-full max-w-[700px]"
+                  />
+                </div>
+
+                <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                  <div className="rounded-[22px] border border-emerald-100/80 bg-white/80 p-4 shadow-sm">
+                    <div className="inline-flex rounded-xl bg-emerald-50 p-2 text-emerald-700">
+                      <Map className="h-4 w-4" />
+                    </div>
+                    <p className="mt-3 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500">
+                      Explore
+                    </p>
+                    <p className="mt-1 text-sm font-semibold text-slate-900">
+                      {districtCount} Districts
+                    </p>
+                  </div>
+
+                  <div className="rounded-[22px] border border-emerald-100/80 bg-white/80 p-4 shadow-sm">
+                    <div className="inline-flex rounded-xl bg-emerald-50 p-2 text-emerald-700">
+                      <MousePointerClick className="h-4 w-4" />
+                    </div>
+                    <p className="mt-3 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500">
+                      Interaction
+                    </p>
+                    <p className="mt-1 text-sm font-semibold text-slate-900">
+                      Hover & Click
+                    </p>
+                  </div>
+
+                  <div className="rounded-[22px] border border-emerald-100/80 bg-white/80 p-4 shadow-sm">
+                    <div className="inline-flex rounded-xl bg-emerald-50 p-2 text-emerald-700">
+                      <Compass className="h-4 w-4" />
+                    </div>
+                    <p className="mt-3 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500">
+                      View
+                    </p>
+                    <p className="mt-1 text-sm font-semibold text-slate-900">
+                      Culture & Travel
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-4 rounded-[22px] border border-emerald-100/80 bg-[linear-gradient(180deg,rgba(255,255,255,0.88),rgba(246,251,247,0.94))] p-4 shadow-sm">
+                  <div className="flex items-start gap-3">
+                    <div className="inline-flex rounded-2xl bg-[linear-gradient(135deg,rgba(16,185,129,0.10),rgba(245,158,11,0.10))] p-3 text-[#1f5c45]">
+                      <MapPinned className="h-5 w-5" />
+                    </div>
+
+                    <div>
+                      <h4 className="text-sm font-semibold text-[#163323]">
+                        How to use this map
+                      </h4>
+                      <p className="mt-1 text-sm leading-7 text-[#5c6e63]">
+                        Move over the map to preview districts, then click one to
+                        reveal its profile, gallery, province, and cultural travel
+                        highlights on the right side.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* RIGHT */}
+            <div className="space-y-5">
+              <div className="overflow-hidden rounded-[30px] border border-white/70 bg-white/80 shadow-[0_22px_60px_rgba(15,23,42,0.06)] backdrop-blur-xl">
+                <div className="relative h-[260px] sm:h-[300px]">
+                  <img
+                    src={
+                      district.images?.[slideIndex] || "/maps/default-district.jpg"
+                    }
+                    alt={district.name}
+                    className="h-full w-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(10,20,16,0.08),rgba(10,20,16,0.72))]" />
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.12),transparent_28%)]" />
+
+                  {district.images.length > 1 && (
+                    <>
+                      <button
+                        type="button"
+                        onClick={prevSlide}
+                        className="absolute left-4 top-1/2 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-white/15 text-white backdrop-blur-md transition hover:bg-white/25"
                       >
-                        <img
-                          src={img}
-                          alt={`${district.name} ${index + 1}`}
-                          className="h-72 w-full object-cover"
-                        />
-                      </div>
+                        <ChevronLeft className="h-5 w-5" />
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={nextSlide}
+                        className="absolute right-4 top-1/2 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-white/15 text-white backdrop-blur-md transition hover:bg-white/25"
+                      >
+                        <ChevronRight className="h-5 w-5" />
+                      </button>
+                    </>
+                  )}
+
+                  <div className="absolute bottom-0 left-0 right-0 p-6">
+                    <div className="inline-flex rounded-full border border-white/15 bg-white/10 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-white/85 backdrop-blur-md">
+                      {hasSelectedDistrict ? "Selected District" : "Map Overview"}
+                    </div>
+
+                    <h3 className="mt-3 text-3xl font-semibold tracking-tight text-white">
+                      {district.name}
+                    </h3>
+
+                    {district.province && (
+                      <p className="mt-2 text-sm font-medium text-white/75">
+                        {district.province}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="grid gap-3 border-t border-slate-200/70 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbf8_100%)] p-5 sm:grid-cols-3">
+                  <div className="rounded-2xl border border-slate-200/70 bg-white px-4 py-3">
+                    <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500">
+                      District
+                    </div>
+                    <div className="mt-1 text-sm font-semibold text-slate-900">
+                      {district.name}
+                    </div>
+                  </div>
+
+                  <div className="rounded-2xl border border-slate-200/70 bg-white px-4 py-3">
+                    <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500">
+                      Province
+                    </div>
+                    <div className="mt-1 text-sm font-semibold text-slate-900">
+                      {district.province || "Not selected"}
+                    </div>
+                  </div>
+
+                  <div className="rounded-2xl border border-slate-200/70 bg-white px-4 py-3">
+                    <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500">
+                      Code
+                    </div>
+                    <div className="mt-1 text-sm font-semibold text-slate-900">
+                      {district.id || "—"}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {!hasSelectedDistrict && (
+                <div className="rounded-[28px] border border-dashed border-emerald-200 bg-[linear-gradient(180deg,rgba(255,255,255,0.9),rgba(244,250,246,0.95))] p-6 text-center shadow-[0_14px_34px_rgba(15,23,42,0.04)]">
+                  <div className="mx-auto inline-flex rounded-2xl bg-emerald-50 p-3 text-emerald-700">
+                    <MapPinned className="h-6 w-6" />
+                  </div>
+                  <h4 className="mt-4 text-lg font-semibold text-[#163323]">
+                    Start by selecting a district
+                  </h4>
+                  <p className="mt-2 text-sm leading-7 text-[#5c6e63]">
+                    Click any area on the map to reveal a richer district profile,
+                    travel imagery, and cultural insights.
+                  </p>
+                </div>
+              )}
+
+              <div className="grid gap-4 md:grid-cols-2">
+                <InfoCard
+                  title="Geographical Profile"
+                  text={district.geographicalProfile}
+                  icon={Mountain}
+                />
+                <InfoCard
+                  title="History and Heritage"
+                  text={district.historyAndHeritage}
+                  icon={Landmark}
+                />
+                <InfoCard
+                  title="Economy and Infrastructure"
+                  text={district.economyAndInfrastructure}
+                  icon={Building2}
+                />
+                <InfoCard
+                  title="Tourism and Attractions"
+                  text={district.tourismAndAttractions}
+                  icon={Palmtree}
+                />
+              </div>
+
+              <InfoCard
+                title="Demographics and Culture"
+                text={district.demographicsAndCulture}
+                icon={Users}
+              />
+
+              {district.images && district.images.length > 0 && (
+                <div className="rounded-[28px] border border-white/70 bg-white/80 p-5 shadow-[0_20px_50px_rgba(15,23,42,0.05)] backdrop-blur-xl">
+                  <div className="mb-4 flex items-center justify-between gap-3">
+                    <div>
+                      <h3 className="text-lg font-semibold text-[#163323]">
+                        District Gallery
+                      </h3>
+                      <p className="mt-1 text-sm text-[#5c6e63]">
+                        A quick visual look at {district.name}.
+                      </p>
+                    </div>
+
+                    <div className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">
+                      Auto Slide
+                    </div>
+                  </div>
+
+                  <div className="grid gap-3 sm:grid-cols-3">
+                    {district.images.map((img, index) => (
+                      <button
+                        key={index}
+                        type="button"
+                        onClick={() => setSlideIndex(index)}
+                        className={`group overflow-hidden rounded-[22px] border transition ${
+                          slideIndex === index
+                            ? "border-emerald-400 shadow-[0_10px_30px_rgba(16,185,129,0.18)]"
+                            : "border-slate-200 hover:border-emerald-200"
+                        }`}
+                      >
+                        <div className="relative">
+                          <img
+                            src={img}
+                            alt={`${district.name} ${index + 1}`}
+                            className="h-28 w-full object-cover transition duration-500 group-hover:scale-[1.05]"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/25 via-transparent to-transparent" />
+                        </div>
+                      </button>
                     ))}
                   </div>
 
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-900/10 via-transparent to-transparent" />
+                  <div className="mt-4 flex justify-center gap-2">
+                    {district.images.map((_, index) => (
+                      <button
+                        key={index}
+                        type="button"
+                        onClick={() => setSlideIndex(index)}
+                        className={`h-2.5 rounded-full transition-all ${
+                          slideIndex === index
+                            ? "w-7 bg-emerald-500"
+                            : "w-2.5 bg-slate-300 hover:bg-slate-400"
+                        }`}
+                      />
+                    ))}
+                  </div>
                 </div>
-
-                <div className="mt-4 flex justify-center gap-2">
-                  {district.images.map((_, index) => (
-                    <button
-                      key={index}
-                      type="button"
-                      onClick={() => setSlideIndex(index)}
-                      className={`h-2.5 rounded-full transition-all ${
-                        slideIndex === index
-                          ? "w-6 bg-emerald-500"
-                          : "w-2.5 bg-slate-300 hover:bg-slate-400"
-                      }`}
-                    />
-                  ))}
-                </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </div>
