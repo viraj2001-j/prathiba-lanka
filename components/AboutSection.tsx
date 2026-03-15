@@ -214,7 +214,7 @@ export default function AboutSection() {
             <div className="about-center flex shrink-0 items-center justify-center px-1 py-2 md:px-0">
               <div className="about-center-image relative h-64 w-full overflow-hidden rounded-[30px] border border-white/60 shadow-[0_20px_50px_rgba(4,61,36,0.14)] sm:h-80 md:h-[420px] md:w-[290px] lg:w-[320px]">
                 <Image
-                  src="/about/train-view.jpg"
+                  src="/images/cultural_places/kandy.jpeg"
                   alt="Sri Lanka train journey"
                   width={500}
                   height={800}
@@ -228,7 +228,7 @@ export default function AboutSection() {
             <div className="about-right flex flex-1 flex-col justify-between rounded-[28px] bg-[linear-gradient(180deg,#ffffff_0%,#fbfdfc_100%)] p-6 md:p-8">
               <div className="about-right-image mb-5 h-48 w-full overflow-hidden rounded-[26px] border border-white/60 shadow-[0_16px_40px_rgba(4,61,36,0.10)] md:h-56">
                 <Image
-                  src="/about/mountain-view.jpg"
+                  src="/images/image.png"
                   alt="Sri Lanka landscape"
                   width={600}
                   height={360}
