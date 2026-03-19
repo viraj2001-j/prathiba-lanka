@@ -408,10 +408,10 @@ import { usePathname } from "next/navigation";
 const navItems = [
   { id: 1, name: "Home", href: "/" },
   { id: 2, name: "Packages", href: "/packages" },
-  { id: 3, name: "Hotels", href: "/hotels" },
+ 
   { id: 4, name: "Reviews", href: "/#reviews" },
   { id: 5, name: "Contact", href: "/contact" },
-  { id: 6, name: "Cart", href: "/cart" },
+
   { id: 7, name: "FAQ & Help", href: "/faq" },
   { id: 8, name: "Map", href: "/map" },
   { id: 9, name: "About", href: "/about" },

@@ -1276,15 +1276,10 @@ export default function ContactPageClient({
             <motion.div style={{ y: heroY }} className="relative">
               <motion.div
                 style={{ scale: heroScale }}
-                className="relative min-h-[540px] overflow-hidden rounded-[36px] shadow-[0_30px_90px_rgba(6,62,40,0.16)]"
+                className="relative min-h-[540px] overflow-hidden"
               >
-                <img
-                  src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=2200&q=80"
-                  alt="Prathibha Lanka Voyages contact"
-                  className="absolute inset-0 h-full w-full object-cover"
-                />
-                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.18))]" />
-
+               
+               
                 <div className="absolute left-7 top-7 rounded-full border border-white/60 bg-white/88 px-6 py-3 font-semibold text-[#0b6a43] shadow-[0_18px_40px_rgba(4,61,36,0.10)] backdrop-blur-md">
                   Curated Sri Lanka Inquiries
                 </div>

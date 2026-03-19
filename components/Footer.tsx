@@ -132,77 +132,7 @@ export default function PremiumFooterWithAccolades() {
 
   return (
     <footer ref={wrapRef} className="bg-white">
-      {/* ====== ACCOLADES / MEMBERSHIPS STRIP ====== */}
-      <div className="border-b border-slate-200">
-        <div className="mx-auto max-w-7xl px-6 py-10">
-          <motion.h3
-            initial={{ opacity: 0, y: 12, filter: "blur(10px)" }}
-            animate={inView ? { opacity: 1, y: 0, filter: "blur(0px)" } : undefined}
-            transition={slowSpring}
-            className="text-center text-3xl font-semibold tracking-tight text-slate-900 md:text-4xl"
-          >
-            Accolades and Memberships
-          </motion.h3>
-
-          <div className="relative mt-10">
-            {/* arrows */}
-            <button
-              onClick={prevLogos}
-              className="absolute left-0 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/80 p-3 ring-1 ring-slate-200 shadow-sm backdrop-blur transition hover:bg-white"
-              aria-label="Previous logos"
-            >
-              <ChevronLeft className="h-5 w-5 text-slate-700" />
-            </button>
-            <button
-              onClick={nextLogos}
-              className="absolute right-0 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/80 p-3 ring-1 ring-slate-200 shadow-sm backdrop-blur transition hover:bg-white"
-              aria-label="Next logos"
-            >
-              <ChevronRight className="h-5 w-5 text-slate-700" />
-            </button>
-
-            <div className="mx-auto max-w-6xl px-12">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={logoIndex}
-                  initial={{ opacity: 0, x: 20, filter: "blur(10px)" }}
-                  animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-                  exit={{ opacity: 0, x: -20, filter: "blur(10px)" }}
-                  transition={{ duration: 0.45, ease: [0.2, 0.8, 0.2, 1] }}
-                  className="grid items-center gap-6 md:grid-cols-6"
-                >
-                  {shown.map((l) => (
-                    <div
-                      key={l.id}
-                      className="grid place-items-center rounded-2xl bg-white p-3"
-                    >
-                      <img
-                        src={l.src}
-                        alt={l.name}
-                        className="h-[46px] w-auto opacity-90 grayscale-[25%] transition hover:opacity-100 hover:grayscale-0"
-                      />
-                    </div>
-                  ))}
-                </motion.div>
-              </AnimatePresence>
-
-              {/* dots */}
-              <div className="mt-6 flex justify-center gap-2">
-                {Array.from({ length: pages }).map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setLogoIndex(i)}
-                    className={`h-2 w-7 rounded-full transition ${
-                      i === logoIndex ? "bg-slate-900/70" : "bg-slate-900/15"
-                    }`}
-                    aria-label={`Go to logo page ${i + 1}`}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      
 
       {/* ====== CINEMATIC FOOTER (BACKGROUND IMAGE + OVERLAY) ====== */}
       <div className="relative overflow-hidden">

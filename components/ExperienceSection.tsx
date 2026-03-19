@@ -298,9 +298,9 @@ export default function RealExperiencesSection() {
     setIndex((p) => (p - 1 + TESTIMONIALS.length) % TESTIMONIALS.length);
 
   return (
-    <section ref={sectionRef} className="relative overflow-hidden">
+    <section ref={sectionRef} className="relative overflow-hidden" id="reviews">
       {/* Background image with animated tone */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0" id="reviews">
         <AnimatePresence mode="wait">
           <motion.img
             key={active.id}
