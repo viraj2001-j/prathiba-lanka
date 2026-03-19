@@ -2458,7 +2458,7 @@ type InfoCardProps = {
 function InfoCard({ title, text, icon: Icon, delay = 0 }: InfoCardProps) {
   return (
     <motion.div
-      variants={fadeUp}
+    
       custom={delay}
       className="group rounded-[26px] border border-[#dfe7df] bg-white/90 p-5 shadow-[0_10px_30px_rgba(15,23,42,0.04)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(15,23,42,0.07)]"
     >
