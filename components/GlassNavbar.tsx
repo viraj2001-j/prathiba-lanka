@@ -415,6 +415,7 @@ const navItems = [
   { id: 7, name: "FAQ & Help", href: "/faq" },
   { id: 8, name: "Map", href: "/map" },
   { id: 9, name: "About", href: "/about" },
+  { id: 10, name: "Dashboard", href: "/dashboard" },
 ];
 
 export default function PremiumNavbar() {
