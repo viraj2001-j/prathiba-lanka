@@ -35,6 +35,7 @@ export default function RootLayout({
         {/* 👇 This is a CLIENT wrapper that can use usePathname */}
         <NavbarWrapper>{children}</NavbarWrapper>
 
+
         <Footer />
       </body>
     </html>

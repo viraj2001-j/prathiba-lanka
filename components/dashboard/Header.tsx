@@ -40,10 +40,10 @@ export default function Header() {
         {/* Profile */}
         <div className="flex items-center gap-2 bg-green-50 px-3 py-1 rounded-full border border-green-200">
           <div className="w-10 h-10 rounded-full bg-green-700 flex items-center justify-center text-white">
-            JD
+            PL
           </div>
           <div>
-            <p className="text-sm font-medium text-green-900">John Doe</p>
+            <p className="text-sm font-medium text-green-900">Prathiba Lanka</p>
             <p className="text-xs text-green-600">Administrator</p>
           </div>
         </div>
