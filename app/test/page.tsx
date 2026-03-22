@@ -1,450 +1,194 @@
 "use client";
-import React from "react";
 
-const HomePage = () => {
-  const tourPackages = [
-    {
-      id: "classic-7",
-      title: "Classic Sri Lanka – 7 Days",
-      duration: "7 Days / 6 Nights",
-      destinations: "Colombo • Kandy • Nuwara Eliya • Ella • Galle",
-      highlights: [
-        "Tea plantations & hill country train ride",
-        "Temple of the Tooth & cultural show",
-        "Galle Fort and sunset at the beach",
-      ],
-      priceFrom: "From 650 USD per person",
-    },
-    {
-      id: "honeymoon-8",
-      title: "Sri Lanka Honeymoon Escape – 8 Days",
-      duration: "8 Days / 7 Nights",
-      destinations: "Sigiriya • Kandy • Ella • Bentota",
-      highlights: [
-        "Romantic cliff views & private dinners",
-        "Couple spa & river cruise",
-        "Beach stay at 4★ / 5★ resorts",
-      ],
-      priceFrom: "From 890 USD per person",
-    },
-    {
-      id: "wildlife-beach-6",
-      title: "Wildlife & Beach – 6 Days",
-      duration: "6 Days / 5 Nights",
-      destinations: "Yala • Mirissa • Galle",
-      highlights: [
-        "Jeep safari with leopards & elephants",
-        "Whale watching (seasonal)",
-        "Relax at tropical beaches",
-      ],
-      priceFrom: "From 720 USD per person",
-    },
-  ];
+import { useEffect, useRef, useState } from "react";
+import { DISTRICT_DATA, FALLBACK_DISTRICT, type DistrictData } from "./districts";
 
-  const reviews = [
-    {
-      id: "r1",
-      name: "Sarah",
-      country: "United Kingdom",
-      text: "Everything was perfectly organized – hotels, driver, and activities. We felt very safe and well taken care of.",
-    },
-    {
-      id: "r2",
-      name: "Ahmed",
-      country: "UAE",
-      text: "Our custom family tour was amazing. Kids loved the safari and the train ride. Highly recommended.",
-    },
-    {
-      id: "r3",
-      name: "Lena",
-      country: "Germany",
-      text: "Great value for money and very flexible with changes. We will recommend them.",
-    },
-  ];
+export default function Final3DMap() {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState<DistrictData | null>(null);
+  const [showPopup, setShowPopup] = useState(false);
+  const [imgIndex, setImgIndex] = useState(0); // For Image Swiper
 
-  const hotels = [
-    {
-      id: "h1",
-      name: "Hill View Hotel – Kandy",
-      type: "3★ / 4★",
-    },
-    {
-      id: "h2",
-      name: "Ocean Breeze Resort – Bentota",
-      type: "4★ Beach Resort",
-    },
-    {
-      id: "h3",
-      name: "Ella Mountain Escape",
-      type: "Boutique Hotel",
-    },
-  ];
+  useEffect(() => {
+    async function initMap() {
+      try {
+        const res = await fetch("/maps/srilanka-districts.svg");
+        const svgText = await res.text();
+        if (!wrapperRef.current) return;
+
+        wrapperRef.current.innerHTML = svgText;
+        const svg = wrapperRef.current.querySelector("svg")!;
+        svg.setAttribute("width", "100%");
+        svg.setAttribute("height", "100%");
+        svg.setAttribute("viewBox", "0 0 1000 1000");
+        svg.style.overflow = "visible"; 
+
+        const paths = Array.from(svg.querySelectorAll("path"));
+
+        paths.forEach((path) => {
+          const id = path.getAttribute("id") || "";
+          path.style.cursor = "pointer";
+          path.style.transition = "all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)";
+          path.style.fill = "#cbd5e1";
+          path.style.stroke = "#fff";
+          path.style.strokeWidth = "1";
+          path.style.transformBox = "fill-box";
+          path.style.transformOrigin = "center";
+
+          path.onclick = (e) => {
+            e.stopPropagation();
+            paths.forEach(p => {
+              p.style.fill = "#cbd5e1";
+              p.style.transform = "translateY(0) rotate(0deg) scale(1)";
+              p.style.filter = "none";
+            });
+
+            svg.appendChild(path);
+            path.style.transform = "translateY(-60px) scale(1.15)";
+            
+            setTimeout(() => {
+              path.style.transform = "translateY(-60px) scale(1.2) rotate(12deg)";
+              path.style.fill = "#10b981";
+              path.style.filter = "drop-shadow(0 40px 20px rgba(0,0,0,0.2)) drop-shadow(0 0 20px rgba(16,185,129,0.6))";
+            }, 50);
+
+            // Delay popup to show animation
+            setTimeout(() => {
+              const data = DISTRICT_DATA[id] || { ...FALLBACK_DISTRICT, id };
+              setActive(data);
+              setImgIndex(0); // Reset image to first one
+              setShowPopup(true);
+            }, 900); 
+          };
+        });
+      } catch (err) {
+        console.error("Map Load Error:", err);
+      }
+    }
+    initMap();
+  }, []);
+
+  const handleClose = () => {
+    setShowPopup(false);
+    setTimeout(() => {
+      setActive(null);
+      if (wrapperRef.current) {
+        const paths = wrapperRef.current.querySelectorAll("path");
+        paths.forEach(p => {
+          (p as SVGPathElement).style.fill = "#cbd5e1";
+          (p as SVGPathElement).style.transform = "translateY(0) rotate(0deg) scale(1)";
+          (p as SVGPathElement).style.filter = "none";
+        });
+      }
+    }, 300);
+  };
+
+  const nextImg = () => {
+    if (active) setImgIndex((prev) => (prev + 1) % active.images.length);
+  };
+
+  const prevImg = () => {
+    if (active) setImgIndex((prev) => (prev - 1 + active.images.length) % active.images.length);
+  };
 
   return (
-    <div className="min-h-screen w-full bg-white font-sans">
-      {/* ====================== HERO ====================== */}
-      {/* NAVBAR */}
-<header className="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-100">
-  <div className="max-w-7xl mx-auto px-4 md:px-8 py-4">
-    <div className="flex items-center justify-between">
-
-      {/* Logo */}
-      <div className="flex items-center space-x-3">
-        <div className="w-10 h-10 bg-green-800 rounded-lg flex items-center justify-center">
-          <span className="text-white font-bold text-xl">PLV</span>
+    <div className="relative flex flex-col min-h-screen bg-[linear-gradient(180deg,#f9fcfa_0%,#f3f8f5_100%)]">
+      <main className="flex-grow flex items-center justify-center relative overflow-hidden pt-10">
+        
+        {/* Background "LANKA" Text */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0">
+          <span className="text-[25vw] font-black text-slate-200/50 uppercase leading-none">Lanka</span>
         </div>
-        <div>
-          <h1 className="text-xl font-bold text-green-800">Prathiba Lanka</h1>
-          <p className="text-xs text-gray-500 tracking-wide">VOYAGES</p>
+
+        {/* Map Stage */}
+        <div className="relative z-10 w-full max-w-2xl h-[70vh] flex items-center justify-center" style={{ perspective: "1200px" }}>
+          <div ref={wrapperRef} className="w-full h-full drop-shadow-2xl" />
         </div>
-      </div>
 
-      {/* Desktop Navigation */}
-      <nav className="hidden lg:flex items-center space-x-8">
-        {[
-          "Home",
-          "Tour Packages",
-          "Hotels",
-          "Destinations",
-          "Reviews",
-          "Contact",
-        ].map((item) => (
-          <a
-            key={item}
-            href={`#${item.toLowerCase().replace(/\s+/g, "-")}`}
-            className="text-gray-700 hover:text-green-800 font-medium transition-all"
-          >
-            {item}
-          </a>
-        ))}
-      </nav>
+        {/* DETAILED POPUP CARD */}
+        {showPopup && active && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/40 backdrop-blur-md p-4 animate-in fade-in duration-300" onClick={handleClose}>
+            <div className="bg-white w-full max-w-2xl rounded-[2.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-500 flex flex-col max-h-[90vh]" onClick={(e) => e.stopPropagation()}>
+              
+              {/* Top Image Swiper Section */}
+              <div className="relative h-64 bg-slate-200 group">
+                <img 
+                  src={active.images[imgIndex]} 
+                  alt={active.name} 
+                  className="w-full h-full object-cover transition-opacity duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+                
+                {/* Close Button */}
+                <button onClick={handleClose} className="absolute top-6 right-6 z-20 bg-black/30 hover:bg-black/50 text-white p-2 rounded-full backdrop-blur-md transition-all">
+                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
 
-      {/* Right Actions */}
-      <div className="flex items-center space-x-4">
-        {/* WhatsApp Button */}
-        <button className="hidden md:flex items-center space-x-2 text-green-800 font-medium hover:text-yellow-500 transition">
-          <svg
-            className="w-5 h-5"
-            fill="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path d="M19.05 4.91A9.816 9.816 0 0012.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01zm-7.01 15.24c-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.05-.2-.32a8.11 8.11 0 01-1.23-4.29c0-4.47 3.64-8.1 8.11-8.1 2.16 0 4.2.84 5.73 2.37a8.088 8.088 0 012.37 5.73c.01 4.47-3.63 8.1-8.09 8.1z" />
-          </svg>
-          <span>WhatsApp</span>
-        </button>
+                {/* Swiper Controls */}
+                <button onClick={prevImg} className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/40 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                  ←
+                </button>
+                <button onClick={nextImg} className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/40 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                  →
+                </button>
 
-        {/* CTA Button */}
-<a href="/login">
-  <button className="bg-green-800 text-white px-6 py-2 rounded-lg font-medium hover:bg-yellow-500 hover:text-black transition-all shadow-md hover:shadow-lg">
-    Plan My Trip
-  </button>
-</a>
-      </div>
+                {/* District Title Over Image */}
+                <div className="absolute bottom-6 left-8 text-white">
+                  <p className="text-xs font-bold uppercase tracking-[0.3em] opacity-80">{active.province}</p>
+                  <h2 className="text-5xl font-black tracking-tighter">{active.name}</h2>
+                </div>
+              </div>
 
-      {/* Mobile Menu Icon */}
-      <button className="lg:hidden text-green-900">
-        <svg
-          className="w-8 h-8"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path strokeLinecap="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-      </button>
-    </div>
-  </div>
-</header>
-
-      <section
-        id="hero"
-        className="relative h-[90vh] bg-cover bg-center flex items-center"
-        style={{
-          backgroundImage: "url('/ai-images/srilanka-hero.jpg')",
-        }}
-      >
-        <div className="absolute inset-0 bg-black/50"></div>
-
-        <div className="relative z-10 px-6 max-w-5xl mx-auto">
-          <h1 className="text-5xl md:text-6xl font-bold text-white leading-tight drop-shadow-xl">
-            Discover Sri Lanka<br />
-            <span className="text-yellow-400">Luxury Travel Made Simple</span>
-          </h1>
-          <p className="mt-6 text-gray-200 text-lg md:text-xl max-w-2xl">
-            Tailor-made tours, comfortable hotels, private transport &
-            world-class hospitality crafted for foreign travelers.
-          </p>
-
-          <div className="mt-10 flex gap-4">
-            <button className="px-8 py-4 bg-yellow-500 text-black rounded-lg font-semibold shadow-lg hover:bg-yellow-400 transition-all">
-              Plan My Trip
-            </button>
-            <button className="px-8 py-4 bg-white/20 text-white border border-white/30 rounded-lg backdrop-blur-sm hover:bg-white/30 transition-all">
-              View Packages
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* ====================== QUICK FINDER ====================== */}
-      <section className="-mt-16 px-6 relative z-20">
-        <div className="max-w-5xl mx-auto bg-white shadow-2xl p-8 rounded-2xl border border-gray-100">
-          <h2 className="text-center text-2xl font-bold text-green-900 mb-6">
-            Find Your Perfect Tour
-          </h2>
-
-          <form className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <input
-              type="text"
-              placeholder="Where in Sri Lanka?"
-              className="px-4 py-3 border rounded-lg bg-gray-50"
-            />
-            <input
-              type="text"
-              placeholder="Travel dates"
-              className="px-4 py-3 border rounded-lg bg-gray-50"
-            />
-            <input
-              type="number"
-              min={1}
-              placeholder="Travelers"
-              className="px-4 py-3 border rounded-lg bg-gray-50"
-            />
-            <button className="bg-green-800 text-white rounded-lg px-6 py-3 font-semibold hover:bg-yellow-500 hover:text-black transition-all">
-              Search
-            </button>
-          </form>
-        </div>
-      </section>
-
-      {/* ====================== PACKAGES ====================== */}
-      <section id="packages" className="py-20 bg-[#F5F5F5] px-6">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-center text-4xl font-bold text-green-800">
-            Popular Sri Lanka Packages
-          </h2>
-          <p className="text-center text-gray-600 mt-3 mb-12">
-            Handcrafted travel experiences loved by travelers across the world.
-          </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-            {tourPackages.map((pkg) => (
-              <div
-                key={pkg.id}
-                className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all"
-              >
-                <div
-                  className="h-48 bg-cover bg-center"
-                  style={{
-                    backgroundImage: `url('/ai-images/package-${pkg.id}.jpg')`,
-                  }}
-                ></div>
-
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-green-800">
-                    {pkg.title}
-                  </h3>
-                  <p className="text-sm text-gray-600 mt-2 mb-4">
-                    {pkg.destinations}
-                  </p>
-
-                  <ul className="text-gray-700 space-y-1 text-sm mb-6">
-                    {pkg.highlights.map((hl) => (
-                      <li key={hl}>• {hl}</li>
-                    ))}
-                  </ul>
-
-                  <div className="flex justify-between items-center">
-                    <span className="text-yellow-600 font-bold">
-                      {pkg.priceFrom}
-                    </span>
-                    <button className="text-green-800 font-medium hover:text-yellow-500">
-                      View →
-                    </button>
+              {/* Scrollable Content Section */}
+              <div className="p-8 overflow-y-auto space-y-8 bg-white custom-scrollbar">
+                
+                {/* Stats Row */}
+                <div className="grid grid-cols-3 gap-4 border-b pb-6">
+                  <div>
+                    <p className="text-[10px] font-bold text-slate-400 uppercase">Capital</p>
+                    <p className="font-bold text-slate-800">{active.capital}</p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-bold text-slate-400 uppercase">Area</p>
+                    <p className="font-bold text-slate-800">{active.area}</p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-bold text-slate-400 uppercase">Population</p>
+                    <p className="font-bold text-slate-800">{active.population}</p>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* ====================== WHY US ====================== */}
-      <section
-        className="py-20 bg-cover bg-center relative"
-        style={{ backgroundImage: "url('/ai-images/whyus-bg.jpg')" }}
-      >
-        <div className="absolute inset-0 bg-black/40"></div>
-
-        <div className="relative max-w-7xl mx-auto px-6 text-center text-white">
-          <h2 className="text-4xl font-bold mb-12">Why Choose Us</h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
-            {[
-              "Local Experts",
-              "Secure Payments",
-              "Flexible Plans",
-              "24/7 Support",
-            ].map((i) => (
-              <div key={i}>
-                <h3 className="text-xl font-semibold">{i}</h3>
-                <p className="mt-2 text-gray-200">
-                  Premium service trusted by foreign travelers.
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ====================== DESTINATIONS ====================== */}
-      <section id="destinations" className="py-20 px-6 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl font-bold text-green-800 text-center mb-12">
-            Top Destinations in Sri Lanka
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {["Kandy", "Ella", "Mirissa", "Sigiriya"].map((place) => (
-              <div
-                key={place}
-                className="relative h-60 rounded-2xl overflow-hidden shadow-lg"
-              >
-                <div
-                  className="absolute inset-0 bg-cover bg-center"
-                  style={{
-                    backgroundImage: `url('/ai-images/destination-${place.toLowerCase()}.jpg')`,
-                  }}
-                ></div>
-
-                <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                  <h3 className="text-white text-2xl font-bold">{place}</h3>
+                {/* Detail Blocks */}
+                <div className="space-y-6">
+                  <DetailBlock title="Geographical Profile" text={active.geographicalProfile} />
+                  <DetailBlock title="History & Heritage" text={active.historyAndHeritage} />
+                  <DetailBlock title="Economy & Infrastructure" text={active.economyAndInfrastructure} />
+                  <DetailBlock title="Tourism & Attractions" text={active.tourismAndAttractions} />
+                  <DetailBlock title="Demographics & Culture" text={active.demographicsAndCulture} />
                 </div>
+
+                <button onClick={handleClose} className="w-full py-4 bg-emerald-600 text-white font-bold rounded-2xl hover:bg-emerald-700 transition-all shadow-lg">
+                  Back to Island Map
+                </button>
               </div>
-            ))}
+            </div>
           </div>
-        </div>
-      </section>
-
-      {/* ====================== REVIEWS ====================== */}
-      <section id="reviews" className="py-20 bg-[#F5F5F5] px-6">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-center text-4xl font-bold text-green-800 mb-12">
-            Guest Reviews
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {reviews.map((r) => (
-              <div
-                key={r.id}
-                className="bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl transition"
-              >
-                <h3 className="text-green-800 font-bold text-lg">{r.name}</h3>
-                <p className="text-sm text-gray-500">{r.country}</p>
-                <p className="mt-4 text-gray-700 italic">"{r.text}"</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ====================== HOTELS ====================== */}
-      <section id="hotels" className="py-20 px-6 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-center text-4xl font-bold text-green-800 mb-12">
-            Partner Hotels
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {hotels.map((h) => (
-              <div
-                key={h.id}
-                className="bg-white shadow-xl rounded-2xl overflow-hidden hover:shadow-2xl transition"
-              >
-                <div
-                  className="h-56 bg-cover bg-center"
-                  style={{
-                    backgroundImage: `url('/ai-images/hotel-${h.id}.jpg')`,
-                  }}
-                ></div>
-
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-green-800">{h.name}</h3>
-                  <p className="text-gray-600">{h.type}</p>
-
-                  <button className="mt-4 w-full py-2 rounded-lg bg-green-800 text-white hover:bg-yellow-500 hover:text-black transition">
-                    View Details
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ====================== CTA ====================== */}
-      <section
-        className="py-20 bg-cover bg-center relative text-center"
-        style={{
-          backgroundImage: "url('/ai-images/cta-bg.jpg')",
-        }}
-      >
-        <div className="absolute inset-0 bg-black/40"></div>
-        <div className="relative z-10 text-white">
-          <h2 className="text-4xl font-bold mb-4">Ready to Start Your Journey?</h2>
-          <p className="text-lg text-gray-200 mb-6">
-            Chat with our travel experts on WhatsApp.
-          </p>
-
-          <button className="px-10 py-4 rounded-lg bg-yellow-500 text-black font-semibold shadow-lg hover:bg-white transition-all">
-            WhatsApp Us
-          </button>
-        </div>
-      </section>
-
-      {/* ====================== FOOTER ====================== */}
-      <footer className="bg-[#0A3A0A] text-gray-300 py-16 px-6">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
-          <div>
-            <h3 className="text-white text-xl font-bold">
-              Prathiba Lanka Voyages
-            </h3>
-            <p className="text-gray-400 mt-3">
-              Safe. Reliable. Luxury tours since 2010.
-            </p>
-          </div>
-
-          <div>
-            <h4 className="text-white font-semibold mb-3">Company</h4>
-            <ul className="space-y-2 text-gray-400">
-              <li>About Us</li>
-              <li>Licenses</li>
-              <li>Team</li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-white font-semibold mb-3">Travel Info</h4>
-            <ul className="space-y-2 text-gray-400">
-              <li>Best Time to Visit</li>
-              <li>Visa Info</li>
-              <li>FAQ</li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-white font-semibold mb-3">Contact</h4>
-            <p className="text-gray-400">info@prathibalanka.com</p>
-            <p className="text-gray-400">+94 77 123 4567</p>
-          </div>
-        </div>
-
-        <p className="text-center text-gray-500 mt-10 text-sm">
-          © {new Date().getFullYear()} Prathiba Lanka Voyages. All rights reserved.
-        </p>
-      </footer>
+        )}
+      </main>
     </div>
   );
-};
+}
 
-export default HomePage;
+// Helper component for detail sections
+function DetailBlock({ title, text }: { title: string; text: string }) {
+  return (
+    <div className="group">
+      <h4 className="text-[10px] font-black text-emerald-600 uppercase tracking-widest mb-1 group-hover:translate-x-1 transition-transform">
+        {title}
+      </h4>
+      <p className="text-slate-600 text-sm leading-relaxed border-l-2 border-slate-100 pl-4">
+        {text}
+      </p>
+    </div>
+  );
+}

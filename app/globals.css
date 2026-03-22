@@ -358,3 +358,17 @@ body {
 
 
 
+/* styles.css or globals.css */
+.path-hover {
+  fill: #a5c998;
+  filter: drop-shadow(0 8px 12px rgba(0,0,0,0.1));
+  transform: translateY(-5px) scale(1.015);
+  transition: all 0.3s ease;
+}
+
+.path-selected {
+  fill: #facc15;
+  filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2));
+  transform: translateY(-6px) scale(1.02);
+  transition: all 0.3s ease;
+}

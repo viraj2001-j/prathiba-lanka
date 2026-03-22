@@ -423,14 +423,14 @@ export default function PremiumNavbar() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 bg-white/60 backdrop-blur-xl border-b border-gray-200 shadow-lg">
+    <nav className="fixed top-0 left-0 w-full z-50 bg-white/50 backdrop-blur-xl border-b border-gray-200 shadow-lg">
       <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
 
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-600 to-green-800 text-white font-bold shadow-lg">
-              PLV
+            <div className="flex h-11 w-11 items-center justify-center">
+              <img src="Logo.png" alt="Prathibha Lanka Voyages Logo" />
             </div>
             <div className="leading-tight">
               <p className="font-semibold text-gray-800 hover:text-emerald-600 transition">
