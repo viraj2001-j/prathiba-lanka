@@ -5,6 +5,7 @@ import { Playfair_Display, Inter } from "next/font/google";
 
 import NavbarWrapper from "@/components/NavbarWrapper";
 import Footer from "@/components/Footer";
+import FooterWrapper from "@/components/FooterWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,10 +34,14 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.variable} ${playfair.variable}`}>
         {/* 👇 This is a CLIENT wrapper that can use usePathname */}
-        <NavbarWrapper>{children}</NavbarWrapper>
+        <NavbarWrapper>
+                    <FooterWrapper>
+                      {children}
+                      </FooterWrapper>
+                      </NavbarWrapper>
 
 
-        <Footer />
+        
       </body>
     </html>
   );

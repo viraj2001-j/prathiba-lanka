@@ -14,7 +14,9 @@ export default function NavbarWrapper({
   const hideNavbar =
     pathname.startsWith("/auth") ||
     pathname.startsWith("/dashboard") ||
-    pathname.startsWith("/register");
+    pathname.startsWith("/register") ||
+    pathname.startsWith("/dashboard");
+
 
   return (
     <>

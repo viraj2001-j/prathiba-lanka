@@ -1,356 +1,166 @@
 "use client";
 
-import React, { useMemo, useRef, useState } from "react";
+import React, { useRef, useMemo } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import {
-  motion,
-  useInView,
-  useScroll,
-  useTransform,
-  AnimatePresence,
-} from "framer-motion";
-import {
-  ArrowUpRight,
-  ChevronLeft,
-  ChevronRight,
   Instagram,
   Facebook,
   Youtube,
   Linkedin,
-  Music2,
+  MapPin,
+  Phone,
+  Mail,
 } from "lucide-react";
 
-type LogoItem = { id: string; name: string; src: string };
-type NavItem = { label: string; href: string };
+export default function UltraPremiumFooter() {
+  const ref = useRef<HTMLElement | null>(null);
 
-const ACCOLADES: LogoItem[] = [
-  {
-    id: "bio",
-    name: "Biodiversity Sri Lanka",
-    src: "https://dummyimage.com/220x90/ffffff/111111.png&text=Biodiversity+Sri+Lanka",
-  },
-  {
-    id: "pata",
-    name: "PATA",
-    src: "https://dummyimage.com/220x90/ffffff/111111.png&text=PATA",
-  },
-  {
-    id: "plastic",
-    name: "Plasticcycle",
-    src: "https://dummyimage.com/220x90/ffffff/111111.png&text=plasticcycle",
-  },
-  {
-    id: "tourcert",
-    name: "TourCert",
-    src: "https://dummyimage.com/220x90/ffffff/111111.png&text=TourCert",
-  },
-  {
-    id: "enat",
-    name: "ENAT",
-    src: "https://dummyimage.com/220x90/ffffff/111111.png&text=ENAT",
-  },
-  {
-    id: "sbcert",
-    name: "SBcert",
-    src: "https://dummyimage.com/220x90/ffffff/111111.png&text=SBcert",
-  },
-  {
-    id: "carbon",
-    name: "Certified Carbon Neutral",
-    src: "https://dummyimage.com/220x90/ffffff/111111.png&text=Carbon+Neutral",
-  },
-];
-
-const FOOTER_NAV: NavItem[] = [
-  { label: "HOME", href: "#" },
-  { label: "DESTINATIONS", href: "#" },
-  { label: "PLANNING A TRIP", href: "#" },
-  { label: "KEY EXPERIENCES", href: "#" },
-  { label: "FAQs", href: "#" },
-  { label: "JOIN THE ALLIANCE", href: "#" },
-  { label: "JOURNAL", href: "#" },
-  { label: "MEDIA", href: "#" },
-];
-
-const PAYMENT_LOGOS: LogoItem[] = [
-  {
-    id: "visa",
-    name: "Visa",
-    src: "https://dummyimage.com/90x40/ffffff/111111.png&text=VISA",
-  },
-  {
-    id: "mc",
-    name: "Mastercard",
-    src: "https://dummyimage.com/90x40/ffffff/111111.png&text=MC",
-  },
-  {
-    id: "amex",
-    name: "Amex",
-    src: "https://dummyimage.com/90x40/ffffff/111111.png&text=AMEX",
-  },
-  {
-    id: "se",
-    name: "Secure",
-    src: "https://dummyimage.com/90x40/ffffff/111111.png&text=Secure",
-  },
-];
-
-function clamp(n: number, min: number, max: number) {
-  return Math.max(min, Math.min(max, n));
-}
-
-export default function PremiumFooterWithAccolades() {
-  const wrapRef = useRef<HTMLElement | null>(null);
-  const inView = useInView(wrapRef, { amount: 0.2, once: true });
-
-  // Scroll-based background tone + subtle parallax
   const { scrollYProgress } = useScroll({
-    target: wrapRef,
+    target: ref,
     offset: ["start end", "end start"],
   });
 
   const bgY = useTransform(scrollYProgress, [0, 1], [30, -20]);
-  const bgScale = useTransform(scrollYProgress, [0, 1], [1.12, 1.02]);
-  const bgDark = useTransform(scrollYProgress, [0, 1], [0.62, 0.25]);
+  const bgScale = useTransform(scrollYProgress, [0, 1], [1.1, 1.02]);
 
-  const slowSpring = useMemo(
-    () => ({ type: "spring", stiffness: 80, damping: 22, mass: 1.2 } as const),
+  const spring = useMemo(
+    () => ({ type: "spring" as const, stiffness: 70, damping: 20 }),
     []
   );
 
-  // Accolades carousel
-  const [logoIndex, setLogoIndex] = useState(0);
-  const pageSize = 6; // show 6 on desktop (fits your screenshot)
-  const pages = Math.ceil(ACCOLADES.length / pageSize);
-
-  const shown = useMemo(() => {
-    const start = logoIndex * pageSize;
-    return ACCOLADES.slice(start, start + pageSize);
-  }, [logoIndex]);
-
-  const nextLogos = () => setLogoIndex((p) => (p + 1) % pages);
-  const prevLogos = () => setLogoIndex((p) => (p - 1 + pages) % pages);
-
   return (
-    <footer ref={wrapRef} className="bg-white">
-      
+    <footer ref={ref} className="relative text-white overflow-hidden">
 
-      {/* ====== CINEMATIC FOOTER (BACKGROUND IMAGE + OVERLAY) ====== */}
-      <div className="relative overflow-hidden">
-        {/* Background image */}
-        <motion.div className="absolute inset-0" style={{ y: bgY, scale: bgScale }}>
-          <img
-            src="https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=2400&q=80"
-            alt="Forest"
-            className="h-full w-full object-cover"
-          />
+      {/* 🌲 FOREST BACKGROUND */}
+      <motion.div
+        className="absolute inset-0"
+        style={{ y: bgY, scale: bgScale }}
+      >
+        <img
+ src="https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=2400&q=80"
+          className="w-full h-full object-cover"
+          alt="forest background"
+        />
+      </motion.div>
+
+      {/* 🎯 DARK OVERLAY FOR READABILITY */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-black/90" />
+
+      {/* CONTENT */}
+      <div className="relative max-w-7xl mx-auto px-6 py-24">
+
+        {/* 🔝 NEWSLETTER BAR */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={spring}
+          className="flex flex-col md:flex-row items-center justify-between gap-6 pb-12 border-b border-white/10"
+        >
+          <div>
+            <h3 className="text-xl font-semibold">Join Our Journey</h3>
+            <p className="text-white/70 text-sm mt-1">
+              Get exclusive travel deals & updates
+            </p>
+          </div>
+
+          <div className="flex w-full md:w-auto items-center bg-white/10 border border-white/20 rounded-full px-4 py-2">
+            <input
+              type="email"
+              placeholder="Enter your email"
+              className="bg-transparent outline-none text-sm px-2 w-full md:w-64 placeholder:text-white/50"
+            />
+            <button className="bg-white text-black text-xs px-4 py-1.5 rounded-full hover:bg-gray-200 transition">
+              Subscribe
+            </button>
+          </div>
         </motion.div>
 
-        {/* Dark overlay changes with scroll */}
-        <motion.div
-          aria-hidden="true"
-          className="absolute inset-0 bg-black"
-          style={{ opacity: bgDark }}
-        />
+        {/* 🧩 MAIN GRID */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mt-12">
 
-        {/* soft mist */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(255,255,255,0.22),transparent_55%),radial-gradient(ellipse_at_bottom,rgba(255,255,255,0.12),transparent_55%)]" />
+          {/* BRAND */}
+          <div>
+            <h2 className="text-lg font-semibold">
+              Prathibha Lanka Voyages
+            </h2>
+            <p className="text-white/70 text-sm mt-3 leading-relaxed">
+              Discover the beauty of Sri Lanka with curated travel experiences,
+              personalized journeys, and unforgettable memories.
+            </p>
 
-        <div className="relative mx-auto max-w-7xl px-6 py-16 md:py-20">
-          {/* Newsletter */}
-          <motion.div
-            initial={{ opacity: 0, y: 16, filter: "blur(10px)" }}
-            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            viewport={{ once: true, amount: 0.25 }}
-            transition={slowSpring}
-            className="mx-auto max-w-3xl text-center"
-          >
-            <div className="text-sm font-semibold tracking-[0.22em] text-white/85">
-              SIGN UP FOR UPDATES
-            </div>
-
-            <div className="mt-7 flex items-center justify-center">
-              <div className="flex w-full max-w-3xl items-center gap-3 rounded-full bg-white/15 px-6 py-4 backdrop-blur ring-1 ring-white/25">
-                <input
-                  className="w-full bg-transparent text-white placeholder:text-white/70 focus:outline-none"
-                  placeholder="ENTER YOUR EMAIL ADDRESS"
-                />
-                <button
-                  className="grid h-11 w-11 place-items-center rounded-full bg-white/90 text-slate-900 transition hover:bg-white"
-                  aria-label="Submit newsletter"
+            {/* SOCIAL */}
+            <div className="flex gap-3 mt-5">
+              {[Instagram, Facebook, Youtube, Linkedin].map((Icon, i) => (
+                <div
+                  key={i}
+                  className="w-9 h-9 flex items-center justify-center rounded-full bg-white/5 border border-white/20 hover:bg-white/10 transition"
                 >
-                  <ArrowUpRight className="h-5 w-5" />
-                </button>
-              </div>
+                  <Icon size={16} />
+                </div>
+              ))}
             </div>
-          </motion.div>
-
-          {/* Nav */}
-          <motion.nav
-            initial={{ opacity: 0, y: 14, filter: "blur(10px)" }}
-            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ ...slowSpring, delay: 0.06 }}
-            className="mt-12 flex flex-wrap items-center justify-center gap-x-10 gap-y-4 text-xs font-semibold tracking-[0.22em] text-white/85"
-          >
-            {FOOTER_NAV.map((n) => (
-              <a key={n.label} href={n.href} className="hover:text-white">
-                {n.label}
-              </a>
-            ))}
-          </motion.nav>
-
-          <div className="mt-6 text-center text-xs font-semibold tracking-[0.22em] text-white/85">
-            CONTACT US
           </div>
 
-          <div className="mt-10 border-t border-white/20" />
+          {/* NAVIGATION */}
+          <div>
+            <h4 className="text-sm font-semibold text-white/80 mb-4">
+              Navigation
+            </h4>
+            <ul className="space-y-3 text-sm text-white/70">
+              <li><a href="/" className="hover:text-white">Home</a></li>
+              <li><a href="/destinations" className="hover:text-white">Destinations</a></li>
+              <li><a href="/experiences" className="hover:text-white">Experiences</a></li>
+              <li><a href="/plan" className="hover:text-white">Plan Trip</a></li>
+              <li><a href="/contact" className="hover:text-white">Contact</a></li>
+            </ul>
+          </div>
 
-          {/* Mid row */}
-          <div className="mt-12 grid gap-10 md:grid-cols-4">
-            {/* Connect */}
-            <motion.div
-              initial={{ opacity: 0, y: 14, filter: "blur(10px)" }}
-              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              viewport={{ once: true, amount: 0.25 }}
-              transition={slowSpring}
-              className="md:col-span-1"
-            >
-              <div className="text-xs font-semibold tracking-[0.22em] text-white/80">
-                CONNECT WITH US
+          {/* SERVICES */}
+          <div>
+            <h4 className="text-sm font-semibold text-white/80 mb-4">
+              Services
+            </h4>
+            <ul className="space-y-3 text-sm text-white/70">
+              <li>Custom Tour Packages</li>
+              <li>Luxury Hotel Booking</li>
+              <li>Private Transport</li>
+              <li>Tour Guides</li>
+              <li>Adventure Activities</li>
+            </ul>
+          </div>
+
+          {/* CONTACT */}
+          <div>
+            <h4 className="text-sm font-semibold text-white/80 mb-4">
+              Contact
+            </h4>
+
+            <div className="space-y-3 text-sm text-white/70">
+              <div className="flex items-start gap-2">
+                <MapPin size={15} />
+                <span>
+                  No. 12, Beach Road <br />
+                  Matara, Sri Lanka
+                </span>
               </div>
 
-              <div className="mt-5 flex items-center gap-3">
-                <a
-                  href="#"
-                  className="grid h-10 w-10 place-items-center rounded-full bg-white/10 text-white ring-1 ring-white/20 backdrop-blur transition hover:bg-white/15"
-                  aria-label="Instagram"
-                >
-                  <Instagram className="h-5 w-5" />
-                </a>
-                <a
-                  href="#"
-                  className="grid h-10 w-10 place-items-center rounded-full bg-white/10 text-white ring-1 ring-white/20 backdrop-blur transition hover:bg-white/15"
-                  aria-label="Facebook"
-                >
-                  <Facebook className="h-5 w-5" />
-                </a>
-                <a
-                  href="#"
-                  className="grid h-10 w-10 place-items-center rounded-full bg-white/10 text-white ring-1 ring-white/20 backdrop-blur transition hover:bg-white/15"
-                  aria-label="YouTube"
-                >
-                  <Youtube className="h-5 w-5" />
-                </a>
-                <a
-                  href="#"
-                  className="grid h-10 w-10 place-items-center rounded-full bg-white/10 text-white ring-1 ring-white/20 backdrop-blur transition hover:bg-white/15"
-                  aria-label="LinkedIn"
-                >
-                  <Linkedin className="h-5 w-5" />
-                </a>
-                <a
-                  href="#"
-                  className="grid h-10 w-10 place-items-center rounded-full bg-white/10 text-white ring-1 ring-white/20 backdrop-blur transition hover:bg-white/15"
-                  aria-label="TikTok"
-                >
-                  <Music2 className="h-5 w-5" />
-                </a>
+              <div className="flex items-center gap-2">
+                <Phone size={15} />
+                +94 71 234 5678
               </div>
 
-              <div className="mt-6 text-lg font-semibold text-white">
+              <div className="flex items-center gap-2">
+                <Mail size={15} />
                 welcome@prathibhalankavoyages.com
               </div>
-
-              <div className="mt-8 text-xs font-semibold tracking-[0.22em] text-white/80">
-                OUR PAYMENT PARTNERS
-              </div>
-
-              <div className="mt-4 flex flex-wrap gap-3">
-                {PAYMENT_LOGOS.map((p) => (
-                  <div
-                    key={p.id}
-                    className="rounded-md bg-white/85 px-3 py-2 ring-1 ring-white/70"
-                  >
-                    <img src={p.src} alt={p.name} className="h-5 w-auto" />
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* Initiative */}
-            <motion.div
-              initial={{ opacity: 0, y: 14, filter: "blur(10px)" }}
-              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              viewport={{ once: true, amount: 0.25 }}
-              transition={{ ...slowSpring, delay: 0.05 }}
-              className="md:col-span-1"
-            >
-              <div className="text-xs font-semibold tracking-[0.22em] text-white/80">
-                AN INITIATIVE BY
-              </div>
-
-              <div className="mt-6 rounded-2xl bg-white/10 p-6 ring-1 ring-white/20 backdrop-blur">
-                <div className="text-xl font-semibold text-white">
-                  SRI LANKA TOURISM ALLIANCE
-                </div>
-                <div className="mt-2 text-sm text-white/75">
-                  Community-driven responsible travel
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Partner */}
-            <motion.div
-              initial={{ opacity: 0, y: 14, filter: "blur(10px)" }}
-              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              viewport={{ once: true, amount: 0.25 }}
-              transition={{ ...slowSpring, delay: 0.1 }}
-              className="md:col-span-1"
-            >
-              <div className="text-xs font-semibold tracking-[0.22em] text-white/80">
-                WEB AND DIGITAL PARTNER
-              </div>
-
-              <div className="mt-6 rounded-2xl bg-white/10 p-6 ring-1 ring-white/20 backdrop-blur">
-                <div className="text-2xl font-semibold tracking-tight text-white">
-                  ANTYRA
-                </div>
-                <div className="text-sm text-white/75">Solutions</div>
-              </div>
-            </motion.div>
-
-            {/* Branding */}
-            <motion.div
-              initial={{ opacity: 0, y: 14, filter: "blur(10px)" }}
-              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              viewport={{ once: true, amount: 0.25 }}
-              transition={{ ...slowSpring, delay: 0.15 }}
-              className="md:col-span-1"
-            >
-              <div className="text-xs font-semibold tracking-[0.22em] text-white/80">
-                BRANDING PARTNER
-              </div>
-
-              <div className="mt-6 rounded-2xl bg-white/10 p-6 ring-1 ring-white/20 backdrop-blur">
-                <div className="text-2xl font-semibold tracking-tight text-white">
-                  audacity
-                </div>
-              </div>
-            </motion.div>
-          </div>
-
-          <div className="mt-12 border-t border-white/20" />
-
-          {/* Bottom row */}
-          <div className="mt-10 flex flex-col items-center justify-between gap-4 text-xs text-white/75 md:flex-row">
-            <div className="font-semibold tracking-[0.18em]">
-              POWERED BY PRATHIBHA LANKA VOYAGES
-            </div>
-            <div className="font-semibold tracking-[0.18em]">
-              CONCEPT AND DESIGN BY{" "}
-              <span className="text-white">YOUR STUDIO</span>
             </div>
           </div>
+        </div>
+
+        {/* 🔻 BOTTOM */}
+        <div className="mt-16 pt-6 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-xs text-white/60 gap-3">
+          <div>© 2026 Prathibha Lanka Voyages</div>
+          <div>All rights reserved</div>
         </div>
       </div>
     </footer>
